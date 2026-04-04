@@ -12,6 +12,8 @@ import { Stack } from "@/components/ui/Stack";
 import type { Product, ProductCategory } from "@/lib/models";
 import { CATEGORY_LABELS } from "@/lib/models";
 import { apiJson } from "@/lib/apiClient";
+import { getProductImageUrl } from "@/lib/productImages";
+import { ProductImageWithFallback } from "@/components/shop/ProductImageWithFallback";
 
 const CATS: ProductCategory[] = ["breakfast", "cafe", "drink"];
 
@@ -150,6 +152,7 @@ export default function DashboardProductsPage() {
         <table className="min-w-full text-left text-sm">
           <thead className="border-b border-slate-100 bg-slate-50 text-xs uppercase text-slate-500">
             <tr>
+              <th className="px-3 py-2">Ảnh</th>
               <th className="px-3 py-2">Tên</th>
               <th className="px-3 py-2">Danh mục</th>
               <th className="px-3 py-2">Giá</th>
@@ -161,6 +164,17 @@ export default function DashboardProductsPage() {
           <tbody>
             {items.map((p) => (
               <tr key={p._id} className="border-b border-slate-50">
+                <td className="px-3 py-2">
+                  <div className="relative h-11 w-11 overflow-hidden rounded-lg bg-slate-100">
+                    <ProductImageWithFallback
+                      src={getProductImageUrl(p)}
+                      alt={p.name}
+                      category={p.category}
+                      sizes="44px"
+                      variant="thumb"
+                    />
+                  </div>
+                </td>
                 <td className="px-3 py-2 font-medium">{p.name}</td>
                 <td className="px-3 py-2">{CATEGORY_LABELS[p.category]}</td>
                 <td className="px-3 py-2">{p.price.toLocaleString("vi-VN")} đ</td>
@@ -268,6 +282,7 @@ export default function DashboardProductsPage() {
               id="p-img"
               value={form.imageUrl}
               onChange={(e) => setForm((s) => ({ ...s, imageUrl: e.target.value }))}
+              placeholder="https://… (HTTPS). Để trống sẽ dùng ảnh mặc định theo danh mục."
             />
           </Field>
           <CheckboxField

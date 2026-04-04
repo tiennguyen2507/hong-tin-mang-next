@@ -1,6 +1,12 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Be_Vietnam_Pro, Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+
+const beVietnam = Be_Vietnam_Pro({
+  variable: "--font-be-vietnam",
+  subsets: ["latin", "vietnamese"],
+  weight: ["400", "500", "600", "700"],
+});
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -25,7 +31,7 @@ export default function RootLayout({
   return (
     <html
       lang="vi"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${beVietnam.variable} ${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="flex min-h-dvh flex-col bg-zinc-50 text-zinc-950 dark:bg-black dark:text-zinc-50">
         {children}

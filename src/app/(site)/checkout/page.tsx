@@ -6,6 +6,7 @@ import * as React from "react";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { useCart } from "@/contexts/CartContext";
+import { cn } from "@/lib/cn";
 
 export default function CheckoutPage() {
   const router = useRouter();
@@ -51,15 +52,18 @@ export default function CheckoutPage() {
   }
 
   if (!ready) {
-    return <p className="text-sm text-zinc-600">Đang tải...</p>;
+    return <p className="text-sm text-[var(--shop-muted)]">Đang tải...</p>;
   }
 
   if (lines.length === 0) {
     return (
-      <div className="grid gap-3">
-        <h1 className="text-2xl font-semibold">Thanh toán</h1>
-        <p className="text-sm text-zinc-600">Giỏ hàng trống.</p>
-        <Link className="text-sm font-medium text-[#1a56db]" href="/">
+      <div className="mx-auto max-w-lg text-center">
+        <h1 className="text-2xl font-bold text-[var(--shop-text)]">Thanh toán</h1>
+        <p className="mt-2 text-sm text-[var(--shop-muted)]">Giỏ hàng trống.</p>
+        <Link
+          href="/"
+          className="mt-4 inline-block text-sm font-semibold text-[var(--shop-primary)] hover:underline"
+        >
           Về thực đơn
         </Link>
       </div>
@@ -67,73 +71,84 @@ export default function CheckoutPage() {
   }
 
   return (
-    <div className="mx-auto grid max-w-lg gap-6">
-      <div>
-        <h1 className="text-2xl font-semibold">Thanh toán</h1>
-        <p className="mt-1 text-sm text-zinc-600">
-          Tổng:{" "}
-          <span className="font-semibold text-[#1a56db]">
-            {total.toLocaleString("vi-VN")} đ
-          </span>
+    <div className="mx-auto grid max-w-lg gap-8">
+      <div className="rounded-2xl border border-[var(--shop-border)] bg-[var(--shop-card)] p-5 shadow-sm sm:p-6">
+        <h1 className="text-2xl font-bold text-[var(--shop-text)]">Thanh toán</h1>
+        <p className="mt-1 text-sm text-[var(--shop-muted)]">
+          Thanh toán khi nhận hàng — điền thông tin giao hàng bên dưới.
         </p>
+        <div className="mt-4 flex items-baseline justify-between border-t border-dashed border-[var(--shop-border)] pt-4">
+          <span className="text-sm font-medium text-[var(--shop-muted)]">Tổng đơn</span>
+          <span className="text-xl font-bold tabular-nums text-[var(--shop-price)]">
+            {total.toLocaleString("vi-VN")} ₫
+          </span>
+        </div>
       </div>
-      <form className="grid gap-3" onSubmit={onSubmit}>
-        <label className="grid gap-1 text-sm">
-          <span className="font-medium text-zinc-700">Họ tên</span>
-          <Input
-            required
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            placeholder="Nguyễn Văn A"
-          />
-        </label>
-        <label className="grid gap-1 text-sm">
-          <span className="font-medium text-zinc-700">Số điện thoại</span>
-          <Input
-            required
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-            placeholder="09xxxxxxxx"
-          />
-        </label>
-        <label className="grid gap-1 text-sm">
-          <span className="font-medium text-zinc-700">Địa chỉ giao hàng</span>
-          <textarea
-            required
-            className="min-h-24 w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-sm outline-none focus:border-zinc-300 focus:ring-2 focus:ring-zinc-200/60 dark:border-zinc-800 dark:bg-zinc-950"
-            value={address}
-            onChange={(e) => setAddress(e.target.value)}
-            placeholder="Số nhà, đường, phường..."
-          />
-        </label>
-        <label className="grid gap-1 text-sm">
-          <span className="font-medium text-zinc-700">Ghi chú (tuỳ chọn)</span>
-          <textarea
-            className="min-h-20 w-full rounded-xl border border-zinc-200 bg-white px-3 py-2 text-sm outline-none focus:border-zinc-300 focus:ring-2 focus:ring-zinc-200/60 dark:border-zinc-800 dark:bg-zinc-950"
-            value={note}
-            onChange={(e) => setNote(e.target.value)}
-            placeholder="Ít đường, lấy trước 8h..."
-          />
-        </label>
+
+      <form className="grid gap-4" onSubmit={onSubmit}>
+        <div className="rounded-2xl border border-[var(--shop-border)] bg-[var(--shop-card)] p-5 shadow-sm sm:p-6">
+          <h2 className="text-sm font-bold uppercase tracking-wide text-[var(--shop-muted)]">
+            Thông tin nhận hàng
+          </h2>
+          <div className="mt-4 grid gap-4">
+            <label className="grid gap-1.5 text-sm">
+              <span className="font-medium text-[var(--shop-text)]">Họ và tên</span>
+              <Input
+                required
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="Nguyễn Văn A"
+                className={cn(
+                  "rounded-xl border-orange-200/80 focus:border-[var(--shop-primary)] focus:ring-orange-200/50",
+                )}
+              />
+            </label>
+            <label className="grid gap-1.5 text-sm">
+              <span className="font-medium text-[var(--shop-text)]">Số điện thoại</span>
+              <Input
+                required
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                placeholder="09xx xxx xxx"
+                className="rounded-xl border-orange-200/80 focus:border-[var(--shop-primary)] focus:ring-orange-200/50"
+              />
+            </label>
+            <label className="grid gap-1.5 text-sm">
+              <span className="font-medium text-[var(--shop-text)]">Địa chỉ giao hàng</span>
+              <textarea
+                required
+                className="min-h-24 w-full rounded-xl border border-orange-200/80 bg-white px-3 py-2.5 text-sm outline-none transition focus:border-[var(--shop-primary)] focus:ring-2 focus:ring-orange-200/50"
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
+                placeholder="Số nhà, đường, phường, quận..."
+              />
+            </label>
+            <label className="grid gap-1.5 text-sm">
+              <span className="font-medium text-[var(--shop-text)]">Ghi chú (tuỳ chọn)</span>
+              <textarea
+                className="min-h-20 w-full rounded-xl border border-orange-200/80 bg-white px-3 py-2.5 text-sm outline-none transition focus:border-[var(--shop-primary)] focus:ring-2 focus:ring-orange-200/50"
+                value={note}
+                onChange={(e) => setNote(e.target.value)}
+                placeholder="Ít đường, giao trước 8h..."
+              />
+            </label>
+          </div>
+        </div>
+
         {err ? (
-          <p className="rounded-xl border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-800">
-            {err}
-          </p>
+          <p className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800">{err}</p>
         ) : null}
-        <div className="flex flex-wrap gap-2">
+
+        <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
           <Button
             type="submit"
-            className="bg-[#2563eb] hover:bg-[#1d4ed8]"
+            className="h-11 flex-1 bg-[var(--shop-primary)] font-semibold text-white hover:bg-[var(--shop-primary-hover)] sm:min-w-[200px]"
             disabled={busy}
           >
-            {busy ? "Đang gửi..." : "Xác nhận đặt hàng"}
+            {busy ? "Đang gửi đơn..." : "Xác nhận đặt hàng"}
           </Button>
-          <Button
-            variant="secondary"
-            type="button"
-            onClick={() => router.push("/cart")}
-          >
-            Quay lại giỏ
+          <Button variant="secondary" type="button" onClick={() => router.push("/cart")}>
+            Quay lại giỏ hàng
           </Button>
         </div>
       </form>

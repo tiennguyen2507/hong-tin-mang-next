@@ -123,7 +123,7 @@ export function DashboardShell({ children, onLogout, toolbar }: DashboardShellPr
       <aside className="flex shrink-0 flex-col overflow-y-auto border-b border-slate-200/80 bg-white lg:h-full lg:w-[240px] lg:border-b-0 lg:border-r">
         <div className="flex flex-row items-center gap-2 p-3 lg:flex-col lg:items-stretch lg:p-4">
           <Link
-            href="/"
+            href="/order"
             className="flex shrink-0 items-center gap-2 rounded-xl px-1 py-1"
           >
             <Image
@@ -137,8 +137,8 @@ export function DashboardShell({ children, onLogout, toolbar }: DashboardShellPr
 
           <nav className="ml-auto flex flex-1 flex-wrap justify-end gap-1 lg:ml-0 lg:mt-2 lg:flex-col lg:justify-start">
             <Link
-              href="/"
-              className={linkClass(pathname === "/")}
+              href="/order"
+              className={linkClass(pathname === "/order")}
             >
               <IconHome />
               <span className="hidden sm:inline">Cửa hàng</span>

@@ -90,7 +90,7 @@ export function DashboardLayoutClient({
             <span className="rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-medium text-slate-600 shadow-sm">
               {todayLabel()}
             </span>
-            <OutlineLink href="/">Về cửa hàng</OutlineLink>
+            <OutlineLink href="/order">Về cửa hàng</OutlineLink>
           </Cluster>
         }
       >

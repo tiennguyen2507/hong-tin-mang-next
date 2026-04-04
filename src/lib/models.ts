@@ -61,5 +61,5 @@ export type Order = Omit<OrderDoc, "_id" | "userId"> & {
 export const CATEGORY_LABELS: Record<ProductCategory, string> = {
   breakfast: "Đồ ăn sáng",
   cafe: "Cafe",
-  drink: "Nước uống",
+  drink: "Đồ uống",
 };

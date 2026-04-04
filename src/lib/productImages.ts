@@ -1,10 +1,10 @@
 import type { ProductCategory } from "@/lib/models";
 
-/** Ảnh mặc định theo danh mục khi sản phẩm chưa có `imageUrl` (Unsplash, dùng được trong demo). */
+/** Ảnh mặc định theo danh mục — màu tươi, phong cách gần mood board (khi chưa có imageUrl). */
 const FALLBACK_BY_CATEGORY: Record<ProductCategory, string> = {
   breakfast:
-    "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80",
-  cafe: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=800&q=80",
+    "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=800&q=80",
+  cafe: "https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=800&q=80",
   drink:
     "https://images.unsplash.com/photo-1544145945-f90425340c7e?auto=format&fit=crop&w=800&q=80",
 };

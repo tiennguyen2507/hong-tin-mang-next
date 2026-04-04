@@ -10,9 +10,36 @@
   --shop-border: rgba(120, 53, 15, 0.12);
   --shop-text: #1c1917;
   --shop-muted: #78716c;
-  --shop-primary: #ea580c;
-  --shop-primary-hover: #c2410c;
+  --shop-primary: #f28c33;
+  --shop-primary-hover: #e07d28;
   --shop-price: #dc2626;
+  /* Landing — cam kem, nền off-white (theo mood board) */
+  --landing-orange: #f28c33;
+  --landing-cream: #fff8f0;
+  --landing-peach: #ffe8d6;
+  /** Xen kẽ section trang chủ: trắng ↔ kem (Old Lace, gần #FDF5E6 / rgb(253,245,230)) */
+  --landing-section-cream: #fdf5e6;
+  /* Trang đặt hàng /order — kem & be như mockup */
+  --order-bg: #fdf8f1;
+  --order-card: #f5efe6;
+  --order-text: #3d2c1e;
+  --order-muted: #6b5344;
+  --order-btn: #a68b6a;
+  --order-btn-hover: #8f7356;
+  /* Trang giỏ — kem & nâu (mockup) */
+  --cart-page-bg: #faf5f0;
+  --cart-text: #3e2723;
+  --cart-table-head: #f0ebe6;
+  --cart-btn: #a6968a;
+  --cart-btn-hover: #8f7f72;
+}
+
+.font-heading {
+  font-family: var(--font-poppins), var(--font-be-vietnam), ui-sans-serif, system-ui, sans-serif;
+}
+
+.font-order-serif {
+  font-family: var(--font-order-serif), Georgia, "Times New Roman", serif;
 }
 
 @theme inline {

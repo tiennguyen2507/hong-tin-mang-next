@@ -9,11 +9,9 @@ export default function SiteLayout({
 }) {
   return (
     <CartProvider>
-      <div className="flex min-h-dvh flex-col bg-[var(--shop-bg)] text-[var(--shop-text)] antialiased">
+      <div className="flex min-h-dvh flex-col bg-white text-[var(--shop-text)] antialiased">
         <SiteHeader />
-        <main className="flex flex-1 flex-col">
-          <div className="mx-auto w-full max-w-6xl flex-1 px-4 py-6 sm:px-5 sm:py-10">{children}</div>
-        </main>
+        <main className="flex w-full flex-1 flex-col">{children}</main>
         <SiteFooter />
       </div>
     </CartProvider>

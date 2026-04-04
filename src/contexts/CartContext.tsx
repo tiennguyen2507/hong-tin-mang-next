@@ -1,12 +1,16 @@
 "use client";
 
 import * as React from "react";
+import type { ProductCategory } from "@/lib/models";
 
 export type CartLine = {
   productId: string;
   name: string;
   price: number;
   quantity: number;
+  /** Ảnh hiển thị trong giỏ (tuỳ chọn, từ sản phẩm lúc thêm) */
+  imageUrl?: string;
+  category?: ProductCategory;
 };
 
 type CartValue = {
@@ -50,7 +54,12 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         const i = prev.findIndex((x) => x.productId === line.productId);
         if (i === -1) return [...prev, { ...line, quantity: q }];
         const next = [...prev];
-        next[i] = { ...next[i], quantity: next[i].quantity + q };
+        next[i] = {
+          ...next[i],
+          quantity: next[i].quantity + q,
+          imageUrl: next[i].imageUrl ?? line.imageUrl,
+          category: next[i].category ?? line.category,
+        };
         return next;
       });
     },

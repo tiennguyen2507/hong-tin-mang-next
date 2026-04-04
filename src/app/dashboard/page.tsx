@@ -1,12 +1,30 @@
 "use client";
 
 import * as React from "react";
-import Link from "next/link";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Tag } from "@/components/ui/Tag";
+import { Alert } from "@/components/ui/Alert";
+import { Badge } from "@/components/ui/Badge";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card";
+import { CenteredPanel } from "@/components/ui/CenteredPanel";
+import { CheckboxField } from "@/components/ui/CheckboxField";
+import { Cluster } from "@/components/ui/Cluster";
+import { EmptyState } from "@/components/ui/EmptyState";
+import { Field } from "@/components/ui/Field";
+import { FormActions } from "@/components/ui/FormActions";
+import { OutlineLink } from "@/components/ui/OutlineLink";
+import { SectionHeader } from "@/components/ui/SectionHeader";
+import { Stack } from "@/components/ui/Stack";
+import { Textarea } from "@/components/ui/Textarea";
 import type { NewsItem, NewsListResponse } from "@/lib/newsApi";
 import { useLocalStore } from "@/hooks/useLocalStore";
+import { ActivityChartCard } from "@/components/dashboard/ActivityChartCard";
+import { DashboardShell } from "@/components/dashboard/DashboardShell";
+import { NewsTaskRow } from "@/components/dashboard/NewsTaskRow";
+import { PublishProgress } from "@/components/dashboard/PublishProgress";
+import { StatCard } from "@/components/dashboard/StatCard";
+import { StatGrid } from "@/components/dashboard/StatGrid";
 
 type FormState = {
   title: string;
@@ -27,6 +45,14 @@ async function apiJson<T>(input: RequestInfo, init?: RequestInit): Promise<T> {
   const text = await res.text();
   if (!res.ok) throw new Error(text || `Request failed (${res.status})`);
   return text ? (JSON.parse(text) as T) : ({} as T);
+}
+
+function todayLabel() {
+  return new Intl.DateTimeFormat("vi-VN", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  }).format(new Date());
 }
 
 export default function DashboardPage() {
@@ -63,6 +89,9 @@ export default function DashboardPage() {
     if (!authHydrated || !dashboardAuth.ok) return;
     void refresh();
   }, [authHydrated, dashboardAuth.ok, refresh]);
+
+  const published = items.filter((i) => i.status).length;
+  const drafts = items.filter((i) => !i.status).length;
 
   function onUnlock(e: React.FormEvent) {
     e.preventDefault();
@@ -118,7 +147,7 @@ export default function DashboardPage() {
   }
 
   async function onDelete(id: string) {
-    if (!confirm("Delete this news item?")) return;
+    if (!confirm("Xóa bài viết này?")) return;
     setError(null);
     setBusyId(id);
     try {
@@ -149,241 +178,220 @@ export default function DashboardPage() {
     }
   }
 
-  return (
-    <div className="grid gap-4 sm:gap-6">
-      <div className="flex flex-wrap items-end justify-between gap-2">
-        <div>
-          <h1 className="text-xl font-semibold tracking-tight sm:text-2xl">
-            Dashboard
-          </h1>
-          <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
-            CRUD tin tức qua API proxy `/api/news`.
-          </p>
-        </div>
-        <div className="flex items-center gap-2">
-          <Link
-            href="/news"
-            className="rounded-full border border-zinc-200 bg-white px-3 py-2 text-sm font-medium hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-950 dark:hover:bg-zinc-900"
-          >
-            View news
-          </Link>
-          {dashboardAuth.ok ? (
-            <Button variant="secondary" size="sm" onClick={startCreate}>
-              New
-            </Button>
-          ) : null}
-        </div>
-      </div>
+  if (!authHydrated) {
+    return (
+      <CenteredPanel>
+        <Card>
+          <CardContent className="text-sm text-slate-600">Đang tải...</CardContent>
+        </Card>
+      </CenteredPanel>
+    );
+  }
 
-      {!authHydrated ? (
-        <div className="max-w-md rounded-2xl border border-zinc-200 bg-white p-4 text-sm text-zinc-600 shadow-sm dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-400">
-          Loading...
-        </div>
-      ) : !dashboardAuth.ok ? (
-        <form
-          onSubmit={onUnlock}
-          className="max-w-md rounded-2xl border border-zinc-200 bg-white p-4 shadow-sm dark:border-zinc-800 dark:bg-zinc-950"
-        >
-          <div className="text-sm font-semibold">Nhập mật khẩu</div>
-          <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
-            Nhập đúng mật khẩu để vào dashboard. Lần sau sẽ không cần nhập lại.
+  if (!dashboardAuth.ok) {
+    return (
+      <CenteredPanel>
+        <Card>
+          <CardTitle>Nhập mật khẩu</CardTitle>
+          <p className="mt-1 text-sm text-slate-600">
+            Nhập đúng mật khẩu để vào bảng điều khiển.
           </p>
-          <div className="mt-3 grid gap-2.5">
+          <form className="mt-4 grid gap-2.5" onSubmit={onUnlock}>
             <Input
               type="password"
-              placeholder="Password"
+              placeholder="Mật khẩu"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               autoFocus
             />
-            {authError ? (
-              <div className="text-sm text-red-600 dark:text-red-400">
-                {authError}
-              </div>
-            ) : null}
+            {authError ? <Alert variant="destructive">{authError}</Alert> : null}
             <Button type="submit" size="sm">
-              Unlock
+              Mở khóa
             </Button>
+          </form>
+        </Card>
+      </CenteredPanel>
+    );
+  }
+
+  return (
+    <DashboardShell
+      onLogout={() => setDashboardAuth({ ok: false })}
+      toolbar={
+        <Cluster gap={2}>
+          <Badge variant="outline" className="rounded-xl px-3 py-2 text-xs">
+            {todayLabel()}
+          </Badge>
+          <OutlineLink href="/news">Xem trang tin</OutlineLink>
+          <Button variant="secondary" size="sm" onClick={startCreate}>
+            + Bài mới
+          </Button>
+        </Cluster>
+      }
+    >
+      <Stack gap={5}>
+        <StatGrid>
+          <StatCard
+            label="Tổng bài"
+            value={items.length}
+            hint={loading ? "Đang tải..." : `${items.length} bài trong hệ thống`}
+            hintTone="neutral"
+            icon={
+              <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M5 13l4 4L19 7" />
+              </svg>
+            }
+          />
+          <StatCard
+            label="Đã đăng"
+            value={published}
+            hint={`${published} bài hiển thị`}
+            hintTone="up"
+            icon={
+              <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            }
+          />
+          <StatCard
+            label="Nháp"
+            value={drafts}
+            hint={drafts ? "Cần duyệt hoặc xuất bản" : "Không có nháp"}
+            hintTone={drafts ? "neutral" : "up"}
+            icon={
+              <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+              </svg>
+            }
+          />
+        </StatGrid>
+
+        <ActivityChartCard />
+
+        {error ? <Alert>{error}</Alert> : null}
+
+        <Stack gap={4}>
+          <SectionHeader
+            title="Tin tức"
+            description="Tạo, sửa, đổi trạng thái và xóa bài."
+            actions={
+              <>
+                <PublishProgress published={published} total={items.length} />
+                <Button variant="ghost" size="sm" onClick={refresh} disabled={loading}>
+                  Làm mới
+                </Button>
+              </>
+            }
+          />
+
+          <div className="grid gap-4 lg:grid-cols-[minmax(0,380px)_1fr]">
+            <Card>
+              <form onSubmit={onSubmit}>
+                <CardHeader>
+                  <CardTitle>{editingId ? "Sửa bài" : "Bài mới"}</CardTitle>
+                  {editingId ? (
+                    <Tag className="border-slate-200 bg-slate-50 text-slate-600">
+                      id: {editingId.slice(-8)}
+                    </Tag>
+                  ) : (
+                    <Tag className="border-[#bfdbfe] bg-[#eff6ff] text-[#1d4ed8]">
+                      mới
+                    </Tag>
+                  )}
+                </CardHeader>
+                <Stack gap={3} className="mt-3">
+                  <Field id="news-title" label="Tiêu đề">
+                    <Input
+                      id="news-title"
+                      value={form.title}
+                      onChange={(e) => setForm((s) => ({ ...s, title: e.target.value }))}
+                      placeholder="Tiêu đề"
+                      required
+                      className="border-slate-200 bg-white"
+                    />
+                  </Field>
+                  <Field id="news-description" label="Mô tả">
+                    <Textarea
+                      id="news-description"
+                      value={form.description}
+                      onChange={(e) =>
+                        setForm((s) => ({ ...s, description: e.target.value }))
+                      }
+                      placeholder="Nội dung ngắn"
+                      required
+                    />
+                  </Field>
+                  <Field id="news-thumbnail" label="Ảnh / video (URL)">
+                    <Input
+                      id="news-thumbnail"
+                      value={form.thumbnail}
+                      onChange={(e) =>
+                        setForm((s) => ({ ...s, thumbnail: e.target.value }))
+                      }
+                      placeholder="https://..."
+                      required
+                      className="border-slate-200 bg-white"
+                    />
+                  </Field>
+                  <CheckboxField
+                    id="news-published"
+                    label="Đã đăng"
+                    checked={form.status}
+                    onChange={(e) =>
+                      setForm((s) => ({ ...s, status: e.target.checked }))
+                    }
+                  />
+                </Stack>
+                <FormActions>
+                  <Button
+                    type="submit"
+                    disabled={busyId === (editingId ?? "new")}
+                    className="flex-1 bg-[#2563eb] hover:bg-[#1d4ed8]"
+                    size="sm"
+                  >
+                    {busyId === (editingId ?? "new") ? "Đang lưu..." : "Lưu"}
+                  </Button>
+                  {editingId ? (
+                    <Button
+                      variant="secondary"
+                      type="button"
+                      onClick={startCreate}
+                      disabled={busyId === (editingId ?? "new")}
+                      size="sm"
+                    >
+                      Hủy
+                    </Button>
+                  ) : null}
+                </FormActions>
+              </form>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>Danh sách</CardTitle>
+                {loading ? (
+                  <span className="text-xs text-slate-400">Đang tải...</span>
+                ) : null}
+              </CardHeader>
+              <Stack gap={2} className="mt-3">
+                {items.map((item) => (
+                  <NewsTaskRow
+                    key={item._id}
+                    item={item}
+                    busy={busyId === item._id}
+                    onEdit={() => startEdit(item)}
+                    onToggle={() => onToggleStatus(item)}
+                    onDelete={() => onDelete(item._id)}
+                  />
+                ))}
+                {!loading && items.length === 0 ? (
+                  <EmptyState>Chưa có bài viết nào.</EmptyState>
+                ) : null}
+              </Stack>
+            </Card>
           </div>
-        </form>
-      ) : null}
-
-      {dashboardAuth.ok ? (
-        <>
-      {error ? (
-        <div className="rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-800 dark:border-red-900/60 dark:bg-red-950/40 dark:text-red-200">
-          {error}
-        </div>
-      ) : null}
-
-      <div className="grid gap-3 sm:gap-4 lg:grid-cols-[360px_1fr]">
-        <form
-          onSubmit={onSubmit}
-          className="rounded-2xl border border-zinc-200 bg-white p-4 shadow-sm dark:border-zinc-800 dark:bg-zinc-950"
-        >
-          <div className="flex items-center justify-between gap-3">
-            <div className="text-sm font-semibold">
-              {editingId ? "Edit news" : "Create news"}
-            </div>
-            {editingId ? <Tag>id: {editingId}</Tag> : <Tag>new</Tag>}
-          </div>
-
-          <div className="mt-3 grid gap-2.5">
-            <label className="grid gap-1.5">
-              <span className="text-xs font-medium text-zinc-600 dark:text-zinc-400">
-                Title
-              </span>
-              <Input
-                value={form.title}
-                onChange={(e) => setForm((s) => ({ ...s, title: e.target.value }))}
-                placeholder="Title"
-                required
-              />
-            </label>
-
-            <label className="grid gap-1.5">
-              <span className="text-xs font-medium text-zinc-600 dark:text-zinc-400">
-                Description
-              </span>
-              <textarea
-                className="min-h-24 w-full resize-y rounded-xl border border-zinc-200 bg-white px-3 py-2 text-sm outline-none transition focus:border-zinc-300 focus:ring-2 focus:ring-zinc-200/60 dark:border-zinc-800 dark:bg-zinc-950 dark:focus:border-zinc-700 dark:focus:ring-zinc-800/60"
-                value={form.description}
-                onChange={(e) =>
-                  setForm((s) => ({ ...s, description: e.target.value }))
-                }
-                placeholder="Description"
-                required
-              />
-            </label>
-
-            <label className="grid gap-1.5">
-              <span className="text-xs font-medium text-zinc-600 dark:text-zinc-400">
-                Thumbnail (url)
-              </span>
-              <Input
-                value={form.thumbnail}
-                onChange={(e) =>
-                  setForm((s) => ({ ...s, thumbnail: e.target.value }))
-                }
-                placeholder="https://..."
-                required
-              />
-            </label>
-
-            <label className="flex items-center justify-between rounded-xl border border-zinc-200 bg-white px-3 py-2 text-sm dark:border-zinc-800 dark:bg-zinc-950">
-              <span className="font-medium">Status</span>
-              <input
-                type="checkbox"
-                checked={form.status}
-                onChange={(e) =>
-                  setForm((s) => ({ ...s, status: e.target.checked }))
-                }
-              />
-            </label>
-          </div>
-
-          <div className="mt-3 flex gap-2">
-            <Button
-              type="submit"
-              disabled={busyId === (editingId ?? "new")}
-              className="flex-1"
-              size="sm"
-            >
-              {busyId === (editingId ?? "new") ? "Saving..." : "Save"}
-            </Button>
-            {editingId ? (
-              <Button
-                variant="secondary"
-                onClick={startCreate}
-                disabled={busyId === (editingId ?? "new")}
-                size="sm"
-              >
-                Cancel
-              </Button>
-            ) : null}
-          </div>
-        </form>
-
-        <div className="rounded-2xl border border-zinc-200 bg-white p-4 shadow-sm dark:border-zinc-800 dark:bg-zinc-950">
-          <div className="flex items-center justify-between gap-3">
-            <div className="text-sm font-semibold">All news</div>
-            <Button variant="ghost" size="sm" onClick={refresh} disabled={loading}>
-              Refresh
-            </Button>
-          </div>
-
-          {loading ? (
-            <div className="mt-4 text-sm text-zinc-600 dark:text-zinc-400">
-              Loading...
-            </div>
-          ) : (
-            <div className="mt-3 grid gap-2.5">
-              {items.map((item) => (
-                <div
-                  key={item._id}
-                  className="rounded-2xl border border-zinc-200 p-3 dark:border-zinc-800"
-                >
-                  <div className="flex items-start justify-between gap-3">
-                    <div className="min-w-0">
-                      <div className="truncate text-sm font-semibold">
-                        {item.title}
-                      </div>
-                      <div className="mt-1 line-clamp-2 text-xs leading-5 text-zinc-600 dark:text-zinc-400">
-                        {item.description}
-                      </div>
-                      <div className="mt-2 flex flex-wrap items-center gap-2">
-                        <Tag className={item.status ? "" : "opacity-60"}>
-                          {item.status ? "Active" : "Inactive"}
-                        </Tag>
-                        <Link
-                          href={`/news/${item._id}`}
-                          className="text-xs font-medium text-zinc-700 hover:underline dark:text-zinc-300"
-                        >
-                          Open detail
-                        </Link>
-                      </div>
-                    </div>
-                    <div className="flex shrink-0 flex-col gap-1.5">
-                      <Button
-                        variant="secondary"
-                        size="sm"
-                        onClick={() => startEdit(item)}
-                        disabled={busyId === item._id}
-                      >
-                        Edit
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => onToggleStatus(item)}
-                        disabled={busyId === item._id}
-                      >
-                        Toggle
-                      </Button>
-                      <Button
-                        variant="danger"
-                        size="sm"
-                        onClick={() => onDelete(item._id)}
-                        disabled={busyId === item._id}
-                      >
-                        Delete
-                      </Button>
-                    </div>
-                  </div>
-                </div>
-              ))}
-              {items.length === 0 ? (
-                <div className="text-sm text-zinc-600 dark:text-zinc-400">
-                  No news yet.
-                </div>
-              ) : null}
-            </div>
-          )}
-        </div>
-      </div>
-        </>
-      ) : null}
-    </div>
+        </Stack>
+      </Stack>
+    </DashboardShell>
   );
 }
-

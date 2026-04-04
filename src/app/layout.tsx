@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "News",
-  description: "News list, detail, and dashboard CRUD",
+  title: "Đồ ăn sáng & Cafe",
+  description: "Đặt đồ ăn sáng, cafe và nước uống online.",
 };
 
 export default function RootLayout({
@@ -24,7 +24,7 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang="en"
+      lang="vi"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="flex min-h-dvh flex-col bg-zinc-50 text-zinc-950 dark:bg-black dark:text-zinc-50">

@@ -2,14 +2,8 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import * as React from "react";
-
-type NavItem = {
-  href: string;
-  label: string;
-  icon: React.ReactNode;
-  active?: boolean;
-};
 
 function IconHome() {
   return (
@@ -24,27 +18,53 @@ function IconHome() {
   );
 }
 
-function IconNews() {
+function IconChart() {
   return (
     <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
       <path
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeWidth={1.75}
-        d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"
+        d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
       />
     </svg>
   );
 }
 
-function IconTasks() {
+function IconBox() {
   return (
     <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
       <path
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeWidth={1.75}
-        d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"
+        d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
+      />
+    </svg>
+  );
+}
+
+function IconUsers() {
+  return (
+    <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={1.75}
+        d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
+      />
+    </svg>
+  );
+}
+
+function IconClipboard() {
+  return (
+    <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={1.75}
+        d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
       />
     </svg>
   );
@@ -69,62 +89,75 @@ function IconSettings() {
   );
 }
 
+const linkClass = (active: boolean) =>
+  `flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition ${
+    active
+      ? "bg-[#e8f0fe] text-[#1a56db]"
+      : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
+  }`;
+
 export type DashboardShellProps = {
   children: React.ReactNode;
   onLogout?: () => void;
   toolbar?: React.ReactNode;
 };
 
+function isActiveNav(href: string, pathname: string | null) {
+  if (!pathname) return false;
+  if (href === "/dashboard") return pathname === "/dashboard";
+  return pathname === href || pathname.startsWith(`${href}/`);
+}
+
 export function DashboardShell({ children, onLogout, toolbar }: DashboardShellProps) {
-  const nav: NavItem[] = [
-    { href: "/news", label: "Trang tin", icon: <IconNews />, active: false },
-    {
-      href: "/dashboard",
-      label: "Quản lý tin",
-      icon: <IconTasks />,
-      active: true,
-    },
-  ];
+  const pathname = usePathname();
+
+  const adminLinks = [
+    { href: "/dashboard", label: "Tổng quan", icon: <IconChart /> },
+    { href: "/dashboard/products", label: "Sản phẩm", icon: <IconBox /> },
+    { href: "/dashboard/users", label: "Người dùng", icon: <IconUsers /> },
+    { href: "/dashboard/orders", label: "Đơn hàng", icon: <IconClipboard /> },
+  ] as const;
 
   return (
     <div className="flex h-full min-h-0 w-full flex-col overflow-hidden lg:flex-row">
-      {/* Sidebar: fixed height, không cuộn theo main — chỉ cuộn nội bộ nếu quá dài */}
       <aside className="flex shrink-0 flex-col overflow-y-auto border-b border-slate-200/80 bg-white lg:h-full lg:w-[240px] lg:border-b-0 lg:border-r">
         <div className="flex flex-row items-center gap-2 p-3 lg:flex-col lg:items-stretch lg:p-4">
           <Link
-            href="/news"
+            href="/"
             className="flex shrink-0 items-center gap-2 rounded-xl px-1 py-1"
           >
             <Image
               src="/logo.png"
-              alt="Hóng Tin Mạng"
+              alt="Đồ ăn sáng & Cafe"
               width={120}
               height={36}
               className="h-8 w-auto object-contain"
             />
           </Link>
+
           <nav className="ml-auto flex flex-1 flex-wrap justify-end gap-1 lg:ml-0 lg:mt-2 lg:flex-col lg:justify-start">
             <Link
-              href="/news"
-              className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-slate-600 transition hover:bg-slate-50 hover:text-slate-900"
+              href="/"
+              className={linkClass(pathname === "/")}
             >
               <IconHome />
-              <span className="hidden sm:inline">Trang chủ</span>
+              <span className="hidden sm:inline">Cửa hàng</span>
             </Link>
-            {nav.map((item) => (
+
+            <p className="hidden px-3 pt-3 text-[10px] font-semibold uppercase tracking-wider text-slate-400 lg:block">
+              Quản trị
+            </p>
+            {adminLinks.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
-                className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition ${
-                  item.active
-                    ? "bg-[#e8f0fe] text-[#1a56db]"
-                    : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
-                }`}
+                className={linkClass(isActiveNav(item.href, pathname))}
               >
                 {item.icon}
                 <span className="hidden sm:inline">{item.label}</span>
               </Link>
             ))}
+
             <span className="hidden items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-slate-400 lg:flex">
               <IconSettings />
               Cài đặt
@@ -162,62 +195,9 @@ export function DashboardShell({ children, onLogout, toolbar }: DashboardShellPr
         </div>
       </aside>
 
-      {/* Main: chỉ vùng này cuộn */}
-      <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden lg:flex-row">
-        <main className="min-h-0 flex-1 overflow-y-auto bg-[#f4f6f9] p-3 sm:p-4 lg:border-r lg:border-slate-200/80">
-          {children}
-        </main>
-
-        {/* Right rail: cố định theo chiều cao viewport, cuộn riêng nếu nội dung dài */}
-        <aside className="hidden min-h-0 w-[280px] shrink-0 overflow-y-auto border-slate-200/80 bg-white lg:flex lg:flex-col lg:p-4">
-          <div className="rounded-2xl border border-slate-100 bg-slate-50/80 p-4">
-            <div className="flex items-center gap-3">
-              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-linear-to-br from-[#93c5fd] to-[#60a5fa] text-sm font-bold text-white">
-                HT
-              </div>
-              <div className="min-w-0">
-                <p className="truncate text-sm font-semibold text-slate-900">
-                  Biên tập viên
-                </p>
-                <p className="truncate text-xs text-slate-500">@hongtinmang</p>
-              </div>
-            </div>
-            <div className="mt-4 flex gap-2">
-              <button
-                type="button"
-                className="flex-1 rounded-xl border border-slate-200 bg-white py-2 text-xs font-medium text-slate-700 shadow-sm"
-              >
-                Gọi
-              </button>
-              <button
-                type="button"
-                className="flex-1 rounded-xl border border-slate-200 bg-white py-2 text-xs font-medium text-slate-700 shadow-sm"
-              >
-                Chat
-              </button>
-            </div>
-          </div>
-          <div className="mt-4">
-            <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">
-              Hoạt động
-            </p>
-            <ul className="mt-3 space-y-3 text-sm text-slate-600">
-              <li className="flex gap-2">
-                <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-emerald-400" />
-                <span>Đồng bộ tin tức từ API Railway.</span>
-              </li>
-              <li className="flex gap-2">
-                <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-amber-400" />
-                <span>Chỉnh sửa hoặc ẩn bài trong danh sách bên trái.</span>
-              </li>
-              <li className="flex gap-2">
-                <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-blue-400" />
-                <span>Xem trước bài trên trang công khai.</span>
-              </li>
-            </ul>
-          </div>
-        </aside>
-      </div>
+      <main className="min-h-0 min-w-0 flex-1 overflow-y-auto bg-[#f4f6f9] p-3 sm:p-4">
+        {children}
+      </main>
     </div>
   );
 }

@@ -63,9 +63,9 @@ export function LoginForm() {
 
   return (
     <CenteredPanel>
-      <Card className="w-full max-w-md">
-        <CardTitle>Đăng nhập</CardTitle>
-        <p className="mt-1 text-sm text-[var(--shop-muted)]">
+      <Card className="w-full max-w-md p-5 shadow-[0_12px_40px_rgba(15,23,42,0.07)] sm:p-6 dark:shadow-[0_12px_40px_rgba(0,0,0,0.35)]">
+        <CardTitle className="font-heading text-xl font-bold tracking-tight sm:text-2xl">Đăng nhập</CardTitle>
+        <p className="mt-2 text-sm leading-relaxed text-[var(--shop-muted)]">
           Quản trị viên đăng nhập để vào bảng điều khiển. Người dùng thường có thể đăng nhập để dùng tính năng sau
           này.
         </p>
@@ -95,7 +95,11 @@ export function LoginForm() {
               onChange={(e) => setPassword(e.target.value)}
             />
           </Field>
-          <Button type="submit" className="w-full bg-[var(--shop-primary)] hover:bg-[var(--shop-primary-hover)]" disabled={busy}>
+          <Button
+            type="submit"
+            className="mt-1 min-h-11 w-full touch-manipulation bg-[var(--shop-primary)] hover:bg-[var(--shop-primary-hover)] active:opacity-95"
+            disabled={busy}
+          >
             {busy ? "Đang đăng nhập..." : "Đăng nhập"}
           </Button>
         </form>

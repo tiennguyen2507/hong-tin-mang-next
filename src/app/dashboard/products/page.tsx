@@ -125,17 +125,17 @@ export default function DashboardProductsPage() {
 
   return (
     <Stack gap={4}>
-      <div className="flex flex-wrap items-center justify-between gap-2">
-        <div>
-          <h1 className="text-xl font-semibold text-[var(--shop-text)]">Sản phẩm</h1>
-          <p className="text-sm text-[var(--shop-muted)]">Danh sách món và đồ uống.</p>
+      <div className="flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between sm:gap-3">
+        <div className="min-w-0">
+          <h1 className="font-heading text-xl font-bold tracking-tight text-[var(--shop-text)] sm:text-2xl">Sản phẩm</h1>
+          <p className="mt-1 text-sm leading-relaxed text-[var(--shop-muted)]">Danh sách món và đồ uống.</p>
         </div>
-        <div className="flex gap-2">
-          <Button variant="secondary" size="sm" type="button" onClick={() => void load()}>
+        <div className="flex w-full flex-col gap-2 sm:w-auto sm:flex-row sm:shrink-0">
+          <Button variant="secondary" size="sm" type="button" className="min-h-10 w-full touch-manipulation sm:w-auto" onClick={() => void load()}>
             Làm mới
           </Button>
           <Button
-            className="bg-[var(--shop-primary)] hover:bg-[var(--shop-primary-hover)]"
+            className="min-h-10 w-full touch-manipulation bg-[var(--shop-primary)] hover:bg-[var(--shop-primary-hover)] sm:w-auto"
             size="sm"
             type="button"
             onClick={openAdd}

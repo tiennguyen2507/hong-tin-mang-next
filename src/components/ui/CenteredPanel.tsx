@@ -21,7 +21,7 @@ export function CenteredPanel({
 }: CenteredPanelProps) {
   return (
     <div
-      className={cn("mx-auto grid w-full gap-4", maxW[maxWidth], className)}
+      className={cn("mx-auto grid w-full max-w-full gap-4 px-1 sm:px-0", maxW[maxWidth], className)}
       {...props}
     >
       {children}

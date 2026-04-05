@@ -1,21 +1,21 @@
 export function ShopHero() {
   return (
-    <section className="relative overflow-hidden rounded-2xl border border-[var(--shop-border)] bg-gradient-to-br from-orange-50 via-amber-50/90 to-[#fff7ed] px-4 py-5 shadow-[0_8px_30px_rgb(234,88,12,0.08)] sm:px-6 sm:py-6">
+    <section className="relative overflow-hidden rounded-2xl border border-[var(--shop-border)] bg-gradient-to-br from-orange-50 via-amber-50/90 to-[#fff7ed] px-4 py-5 shadow-[0_8px_30px_rgb(234,88,12,0.08)] dark:from-[#252e38] dark:via-[#1e262d] dark:to-[#1a2228] dark:shadow-[0_12px_40px_rgba(0,0,0,0.25)] sm:px-6 sm:py-6">
       <div
-        className="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full bg-orange-200/40 blur-3xl"
+        className="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full bg-orange-200/40 blur-3xl dark:bg-[var(--shop-primary)]/12"
         aria-hidden
       />
       <div
-        className="pointer-events-none absolute -bottom-12 -left-8 h-40 w-40 rounded-full bg-amber-300/30 blur-3xl"
+        className="pointer-events-none absolute -bottom-12 -left-8 h-40 w-40 rounded-full bg-amber-300/30 blur-3xl dark:bg-amber-900/20"
         aria-hidden
       />
       <div className="relative max-w-2xl">
-        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-orange-700/90">
+        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-orange-700/90 dark:text-[var(--shop-primary)]">
           Đặt món online
         </p>
         <h1 className="mt-1.5 text-2xl font-bold leading-snug tracking-tight text-[var(--shop-text)] sm:text-3xl">
           Đồ ăn sáng, cafe &amp; nước uống
-          <span className="block text-lg font-semibold text-orange-700 sm:text-2xl">
+          <span className="block text-lg font-semibold text-orange-700 dark:text-[var(--landing-orange)] sm:text-2xl">
             Giao tận nơi — nóng hổi như tại quầy
           </span>
         </h1>
@@ -26,7 +26,7 @@ export function ShopHero() {
           {["Giao trong ngày", "Thanh toán khi nhận hàng", "Ưu đãi combo"].map((label) => (
             <li
               key={label}
-              className="rounded-full border border-orange-200/80 bg-white/80 px-2.5 py-1 text-[0.65rem] font-medium text-orange-900 shadow-sm backdrop-blur-sm sm:px-3 sm:text-xs"
+              className="rounded-full border border-orange-200/80 bg-white/80 px-2.5 py-1 text-[0.65rem] font-medium text-orange-900 shadow-sm backdrop-blur-sm dark:border-[var(--shop-border)] dark:bg-[var(--shop-surface)]/85 dark:text-[var(--shop-text)] sm:px-3 sm:text-xs"
             >
               {label}
             </li>

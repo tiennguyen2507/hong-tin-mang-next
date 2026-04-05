@@ -76,23 +76,104 @@ export default function CartPage() {
     >
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-          <div>
-            <h1 className="font-order-serif text-2xl font-bold text-[var(--cart-text)] sm:text-3xl">Giỏ hàng</h1>
+          <div className="min-w-0">
+            <h1 className="font-order-serif text-2xl font-bold tracking-tight text-[var(--cart-text)] sm:text-3xl">Giỏ hàng</h1>
             {count > 0 ? (
               <p className="mt-1 text-sm text-[var(--order-muted)]">{count} món trong giỏ</p>
             ) : null}
           </div>
           <Link
             href="/order"
-            className="inline-flex w-fit items-center rounded-xl border border-[var(--cart-input-border)] bg-[var(--cart-surface)] px-4 py-2.5 text-sm font-medium text-[var(--cart-text)] shadow-sm transition hover:opacity-90"
+            className="inline-flex min-h-11 w-full touch-manipulation items-center justify-center rounded-xl border border-[var(--cart-input-border)] bg-[var(--cart-surface)] px-4 py-2.5 text-sm font-medium text-[var(--cart-text)] shadow-sm transition hover:opacity-90 active:opacity-95 sm:h-auto sm:w-fit sm:min-h-0"
           >
             ← Trở về đặt món
           </Link>
         </div>
 
-        <div className="mt-6 overflow-hidden rounded-xl border border-[var(--cart-outer-border)] bg-[var(--cart-surface)] shadow-sm">
+        {/* SP: thẻ từng món, không cuộn ngang bảng */}
+        <div className="mt-6 md:hidden">
+          {lines.length === 0 ? (
+            <div className="rounded-xl border border-[var(--cart-outer-border)] bg-[var(--cart-surface)] px-4 py-12 text-center text-sm font-medium text-[var(--cart-text)] shadow-sm">
+              Giỏ hàng trống.
+            </div>
+          ) : (
+            <ul className="space-y-3">
+              {lines.map((l) => {
+                const cat: ProductCategory = l.category ?? "breakfast";
+                const imgSrc = getProductImageUrl({
+                  imageUrl: l.imageUrl,
+                  category: cat,
+                });
+                const lineTotal = l.price * l.quantity;
+                return (
+                  <li
+                    key={l.productId}
+                    className="rounded-xl border border-[var(--cart-outer-border)] bg-[var(--cart-surface)] p-4 shadow-sm"
+                  >
+                    <div className="flex gap-3">
+                      <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-lg bg-[var(--cart-table-head)]">
+                        <ProductImageWithFallback
+                          src={imgSrc}
+                          alt={l.name}
+                          category={cat}
+                          sizes="64px"
+                          variant="thumb"
+                        />
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <p className="font-bold leading-snug text-[var(--cart-text)]">{l.name}</p>
+                        <p className="mt-0.5 text-sm tabular-nums text-[var(--order-muted)]">
+                          {l.price.toLocaleString("vi-VN")} đ <span className="text-xs">/ món</span>
+                        </p>
+                        <div className="mt-3 flex flex-wrap items-center justify-between gap-2">
+                          <div className="flex items-center gap-1">
+                            <button
+                              type="button"
+                              aria-label="Giảm"
+                              disabled={l.quantity <= 1}
+                              onClick={() => setQty(l.productId, l.quantity - 1)}
+                              className="flex h-9 w-9 touch-manipulation items-center justify-center rounded-lg border border-[var(--cart-input-border)] bg-[var(--cart-page-bg)] text-[var(--order-muted)] transition active:opacity-90 disabled:opacity-40"
+                            >
+                              −
+                            </button>
+                            <input
+                              readOnly
+                              value={l.quantity}
+                              className="h-9 w-11 rounded-lg border border-[var(--cart-input-border)] bg-[var(--cart-page-bg)] text-center text-sm font-semibold tabular-nums text-[var(--cart-text)]"
+                              aria-label="Số lượng"
+                            />
+                            <button
+                              type="button"
+                              aria-label="Tăng"
+                              onClick={() => setQty(l.productId, l.quantity + 1)}
+                              className="flex h-9 w-9 touch-manipulation items-center justify-center rounded-lg border border-[var(--cart-input-border)] bg-[var(--cart-page-bg)] text-[var(--order-muted)] transition active:opacity-90"
+                            >
+                              +
+                            </button>
+                          </div>
+                          <p className="text-base font-bold tabular-nums text-[var(--cart-text)]">
+                            {lineTotal.toLocaleString("vi-VN")} đ
+                          </p>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => remove(l.productId)}
+                          className="mt-2 text-xs font-medium text-red-600 underline-offset-2 hover:underline dark:text-red-300"
+                        >
+                          Xóa khỏi giỏ
+                        </button>
+                      </div>
+                    </div>
+                  </li>
+                );
+              })}
+            </ul>
+          )}
+        </div>
+
+        <div className="mt-6 hidden overflow-hidden rounded-xl border border-[var(--cart-outer-border)] bg-[var(--cart-surface)] shadow-sm md:block">
           <div className="overflow-x-auto">
-            <table className="w-full min-w-[640px] border-collapse text-left text-sm">
+            <table className="w-full min-w-[560px] border-collapse text-left text-sm lg:min-w-0 lg:w-full">
               <thead>
                 <tr className="border-b border-[var(--cart-muted-border)] bg-[var(--cart-table-head)]">
                   <th className="px-4 py-3 font-semibold text-[var(--cart-text)]">Sản phẩm</th>
@@ -182,8 +263,26 @@ export default function CartPage() {
           </div>
         </div>
 
-        <form onSubmit={onSubmit} className="mt-8 grid gap-8 lg:grid-cols-3 lg:gap-10">
-          <div className="space-y-4 lg:col-span-2">
+        <div className="mt-8 grid gap-8 lg:grid-cols-3 lg:gap-10">
+          <aside className="order-1 lg:order-2 lg:col-span-1">
+            <div className="rounded-xl border border-[var(--cart-outer-border)] bg-[var(--cart-surface)] p-5 shadow-sm lg:sticky lg:top-24">
+              <h3 className="text-lg font-bold text-[var(--cart-text)]">Tổng kết</h3>
+              <dl className="mt-4 space-y-3 text-sm">
+                <div className="flex justify-between gap-4 text-[var(--order-muted)]">
+                  <dt>Tổng sản phẩm</dt>
+                  <dd className="font-semibold tabular-nums text-[var(--cart-text)]">{count}</dd>
+                </div>
+                <div className="flex justify-between gap-4 border-t border-[var(--cart-muted-border)] pt-3">
+                  <dt className="font-semibold text-[var(--cart-text)]">Tổng cộng</dt>
+                  <dd className="text-lg font-bold tabular-nums text-[var(--cart-text)]">
+                    {total.toLocaleString("vi-VN")} đ
+                  </dd>
+                </div>
+              </dl>
+            </div>
+          </aside>
+
+          <form onSubmit={onSubmit} className="order-2 space-y-4 lg:order-1 lg:col-span-2">
             <div className="rounded-xl border border-[var(--cart-outer-border)] bg-[var(--cart-surface)] p-5 shadow-sm sm:p-6">
               <h2 className="text-lg font-bold text-[var(--cart-text)]">Thông tin khách hàng</h2>
               <div className="mt-4 grid gap-4 sm:grid-cols-2">
@@ -266,32 +365,14 @@ export default function CartPage() {
               disabled={busy || lines.length === 0}
               className={cn(
                 "mt-4 w-full rounded-xl px-4 py-3.5 text-base font-semibold text-white shadow-sm transition",
-                "bg-[var(--cart-btn)] hover:bg-[var(--cart-btn-hover)] disabled:opacity-60",
+                "min-h-12 touch-manipulation bg-[var(--cart-btn)] hover:bg-[var(--cart-btn-hover)] active:opacity-95 disabled:opacity-60",
               )}
             >
               {busy ? "Đang gửi đơn..." : "Xác nhận đặt"}
             </button>
             </div>
-          </div>
-
-          <aside className="lg:col-span-1">
-            <div className="sticky top-24 rounded-xl border border-[var(--cart-outer-border)] bg-[var(--cart-surface)] p-5 shadow-sm">
-              <h3 className="text-lg font-bold text-[var(--cart-text)]">Tổng kết</h3>
-              <dl className="mt-4 space-y-3 text-sm">
-                <div className="flex justify-between gap-4 text-[var(--order-muted)]">
-                  <dt>Tổng sản phẩm</dt>
-                  <dd className="font-semibold tabular-nums text-[var(--cart-text)]">{count}</dd>
-                </div>
-                <div className="flex justify-between gap-4 border-t border-[var(--cart-muted-border)] pt-3">
-                  <dt className="font-semibold text-[var(--cart-text)]">Tổng cộng</dt>
-                  <dd className="text-lg font-bold tabular-nums text-[var(--cart-text)]">
-                    {total.toLocaleString("vi-VN")} đ
-                  </dd>
-                </div>
-              </dl>
-            </div>
-          </aside>
-        </form>
+          </form>
+        </div>
       </div>
     </div>
   );

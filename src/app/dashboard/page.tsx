@@ -44,8 +44,8 @@ export default function DashboardOverviewPage() {
   return (
     <Stack gap={5}>
       <div>
-        <h1 className="text-xl font-semibold text-[var(--shop-text)]">Tổng quan</h1>
-        <p className="mt-1 text-sm text-[var(--shop-muted)]">
+        <h1 className="font-heading text-xl font-bold tracking-tight text-[var(--shop-text)] sm:text-2xl">Tổng quan</h1>
+        <p className="mt-1.5 max-w-2xl text-sm leading-relaxed text-[var(--shop-muted)]">
           Chọn mục trong sidebar để quản lý sản phẩm, người dùng và đơn hàng.
         </p>
       </div>
@@ -86,22 +86,22 @@ export default function DashboardOverviewPage() {
         />
       </StatGrid>
 
-      <div className="grid gap-2 sm:grid-cols-3">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-3 sm:gap-2">
         <Link
           href="/dashboard/products"
-          className="rounded-2xl border border-[var(--shop-border)] bg-[var(--shop-surface)] px-4 py-3 text-sm font-medium text-[var(--shop-primary)] shadow-sm transition hover:bg-[var(--shop-border)]/25"
+          className="flex min-h-12 touch-manipulation items-center justify-center rounded-2xl border border-[var(--shop-border)] bg-[var(--shop-surface)] px-4 py-3 text-center text-sm font-semibold text-[var(--shop-primary)] shadow-sm transition hover:bg-[var(--shop-border)]/30 active:opacity-90 sm:justify-center"
         >
           Quản lý sản phẩm →
         </Link>
         <Link
           href="/dashboard/users"
-          className="rounded-2xl border border-[var(--shop-border)] bg-[var(--shop-surface)] px-4 py-3 text-sm font-medium text-[var(--shop-primary)] shadow-sm transition hover:bg-[var(--shop-border)]/25"
+          className="flex min-h-12 touch-manipulation items-center justify-center rounded-2xl border border-[var(--shop-border)] bg-[var(--shop-surface)] px-4 py-3 text-center text-sm font-semibold text-[var(--shop-primary)] shadow-sm transition hover:bg-[var(--shop-border)]/30 active:opacity-90 sm:justify-center"
         >
           Quản lý người dùng →
         </Link>
         <Link
           href="/dashboard/orders"
-          className="rounded-2xl border border-[var(--shop-border)] bg-[var(--shop-surface)] px-4 py-3 text-sm font-medium text-[var(--shop-primary)] shadow-sm transition hover:bg-[var(--shop-border)]/25"
+          className="flex min-h-12 touch-manipulation items-center justify-center rounded-2xl border border-[var(--shop-border)] bg-[var(--shop-surface)] px-4 py-3 text-center text-sm font-semibold text-[var(--shop-primary)] shadow-sm transition hover:bg-[var(--shop-border)]/30 active:opacity-90 sm:justify-center"
         >
           Quản lý đơn hàng →
         </Link>

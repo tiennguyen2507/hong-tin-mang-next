@@ -17,9 +17,10 @@ const CATEGORY_SUBTITLE: Record<ProductCategory, string> = {
 };
 
 const catAccent: Record<ProductCategory, string> = {
-  breakfast: "from-amber-100 to-orange-50",
-  cafe: "from-stone-200 to-amber-100/80",
-  drink: "from-sky-100 to-cyan-50",
+  breakfast:
+    "from-amber-100 to-orange-50 dark:from-[var(--landing-peach)] dark:to-[var(--landing-cream)]",
+  cafe: "from-stone-200 to-amber-100/80 dark:from-stone-700 dark:to-stone-900",
+  drink: "from-sky-100 to-cyan-50 dark:from-sky-950 dark:to-cyan-950",
 };
 
 function OrderProductCard({
@@ -57,7 +58,7 @@ function OrderProductCard({
   return (
     <article
       className={cn(
-        "flex flex-col overflow-hidden rounded-lg border border-[#e8dfd0] bg-[var(--order-card)] p-2 shadow-sm sm:p-2.5",
+        "flex flex-col overflow-hidden rounded-xl border border-[var(--shop-border)] bg-[var(--order-card)] p-2 shadow-sm sm:p-2.5",
         "transition-shadow hover:shadow-md",
       )}
     >
@@ -99,7 +100,7 @@ function OrderProductCard({
               aria-label="Giảm"
               disabled={p.stock <= 0 || qty <= 0}
               onClick={dec}
-              className="flex h-7 w-7 shrink-0 items-center justify-center rounded border border-[var(--shop-border)] bg-[var(--shop-surface)] text-sm font-medium text-[var(--order-text)] transition enabled:hover:opacity-90 disabled:opacity-40"
+              className="flex h-8 w-8 shrink-0 touch-manipulation items-center justify-center rounded-lg border border-[var(--shop-border)] bg-[var(--shop-surface)] text-sm font-medium text-[var(--order-text)] transition enabled:hover:opacity-90 enabled:active:opacity-90 disabled:opacity-40 sm:h-7 sm:w-7 sm:rounded"
             >
               −
             </button>
@@ -108,7 +109,7 @@ function OrderProductCard({
               inputMode="numeric"
               readOnly
               value={qty}
-              className="h-7 w-9 rounded border border-[var(--shop-border)] bg-[var(--shop-surface)] text-center text-[0.7rem] font-semibold tabular-nums text-[var(--order-text)] sm:w-10 sm:text-xs"
+              className="h-8 w-10 rounded-lg border border-[var(--shop-border)] bg-[var(--shop-surface)] text-center text-[0.7rem] font-semibold tabular-nums text-[var(--order-text)] sm:h-7 sm:w-10 sm:rounded sm:text-xs"
               aria-label="Số lượng"
             />
             <button
@@ -116,14 +117,14 @@ function OrderProductCard({
               aria-label="Tăng"
               disabled={p.stock <= 0 || qty >= max}
               onClick={inc}
-              className="flex h-7 w-7 shrink-0 items-center justify-center rounded border border-[var(--shop-border)] bg-[var(--shop-surface)] text-sm font-medium text-[var(--order-text)] transition enabled:hover:opacity-90 disabled:opacity-40"
+              className="flex h-8 w-8 shrink-0 touch-manipulation items-center justify-center rounded-lg border border-[var(--shop-border)] bg-[var(--shop-surface)] text-sm font-medium text-[var(--order-text)] transition enabled:hover:opacity-90 enabled:active:opacity-90 disabled:opacity-40 sm:h-7 sm:w-7 sm:rounded"
             >
               +
             </button>
           </div>
         </div>
 
-        <div className="mt-1.5 flex items-center justify-between gap-2 border-t border-[#e8dfd0]/80 pt-1.5">
+        <div className="mt-1.5 flex items-center justify-between gap-2 border-t border-[var(--shop-border)] pt-1.5">
           <p className="text-[0.7rem] font-bold tabular-nums leading-tight text-[var(--order-text)] sm:text-xs">
             {p.price.toLocaleString("vi-VN")} đ{" "}
             <span className="text-[0.6rem] font-semibold text-[var(--order-muted)]">/phần</span>
@@ -132,7 +133,7 @@ function OrderProductCard({
             type="button"
             disabled={p.stock <= 0 || qty <= 0}
             onClick={onAdd}
-            className="shrink-0 rounded bg-[var(--order-btn)] px-2.5 py-1 text-[0.65rem] font-semibold text-white shadow-sm transition hover:bg-[var(--order-btn-hover)] disabled:cursor-not-allowed disabled:opacity-40 sm:px-3 sm:py-1.5 sm:text-xs"
+            className="min-h-8 shrink-0 touch-manipulation rounded-lg bg-[var(--order-btn)] px-2.5 py-1 text-[0.65rem] font-semibold text-white shadow-sm transition hover:bg-[var(--order-btn-hover)] active:opacity-95 disabled:cursor-not-allowed disabled:opacity-40 sm:min-h-0 sm:px-3 sm:py-1.5 sm:text-xs"
           >
             {p.stock <= 0 ? "Hết hàng" : "Thêm"}
           </button>

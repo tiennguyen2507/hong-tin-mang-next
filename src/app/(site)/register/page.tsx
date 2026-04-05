@@ -47,9 +47,9 @@ export default function RegisterPage() {
   return (
     <div className="flex flex-1 flex-col items-center justify-center bg-[var(--shop-bg)] py-10 transition-colors duration-300">
       <CenteredPanel>
-        <Card className="w-full max-w-md">
-          <CardTitle>Đăng ký</CardTitle>
-          <p className="mt-1 text-sm text-[var(--shop-muted)]">
+        <Card className="w-full max-w-md p-5 shadow-[0_12px_40px_rgba(15,23,42,0.07)] sm:p-6 dark:shadow-[0_12px_40px_rgba(0,0,0,0.35)]">
+          <CardTitle className="font-heading text-xl font-bold tracking-tight sm:text-2xl">Đăng ký</CardTitle>
+          <p className="mt-2 text-sm leading-relaxed text-[var(--shop-muted)]">
             Tài khoản <strong>đầu tiên</strong> trong hệ thống sẽ tự trở thành quản trị viên. Các tài khoản sau là
             người dùng thường (admin có thể đổi vai trò trong mục Người dùng).
           </p>
@@ -100,7 +100,11 @@ export default function RegisterPage() {
                 onChange={(e) => setConfirm(e.target.value)}
               />
             </Field>
-            <Button type="submit" className="w-full bg-[var(--shop-primary)] hover:bg-[var(--shop-primary-hover)]" disabled={busy}>
+            <Button
+              type="submit"
+              className="mt-1 min-h-11 w-full touch-manipulation bg-[var(--shop-primary)] hover:bg-[var(--shop-primary-hover)] active:opacity-95"
+              disabled={busy}
+            >
               {busy ? "Đang tạo tài khoản..." : "Đăng ký"}
             </Button>
           </form>

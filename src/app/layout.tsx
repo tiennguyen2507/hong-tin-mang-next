@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Be_Vietnam_Pro, Geist, Geist_Mono, Lora, Poppins } from "next/font/google";
+import { ThemeProvider } from "@/components/theme/ThemeProvider";
 import "./globals.css";
 
 const lora = Lora({
@@ -43,10 +44,13 @@ export default function RootLayout({
   return (
     <html
       lang="vi"
+      suppressHydrationWarning
       className={`${lora.variable} ${poppins.variable} ${beVietnam.variable} ${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="flex min-h-dvh flex-col bg-zinc-50 text-zinc-950 dark:bg-black dark:text-zinc-50">
-        {children}
+      <body className="flex min-h-dvh flex-col bg-[var(--background)] text-[var(--foreground)] transition-colors duration-300">
+        <ThemeProvider>
+          <div className="flex min-h-dvh w-full flex-1 flex-col">{children}</div>
+        </ThemeProvider>
       </body>
     </html>
   );

@@ -63,7 +63,7 @@ function OrderProductCard({
     >
       <div
         className={cn(
-          "relative aspect-[4/3] w-full overflow-hidden rounded-md bg-gradient-to-br",
+          "relative aspect-[4/3] w-full overflow-hidden rounded-md bg-linear-to-br",
           catAccent[cat],
         )}
       >
@@ -99,7 +99,7 @@ function OrderProductCard({
               aria-label="Giảm"
               disabled={p.stock <= 0 || qty <= 0}
               onClick={dec}
-              className="flex h-7 w-7 shrink-0 items-center justify-center rounded border border-[#d4c4b0] bg-white text-sm font-medium text-[var(--order-text)] transition enabled:hover:bg-stone-50 disabled:opacity-40"
+              className="flex h-7 w-7 shrink-0 items-center justify-center rounded border border-[var(--shop-border)] bg-[var(--shop-surface)] text-sm font-medium text-[var(--order-text)] transition enabled:hover:opacity-90 disabled:opacity-40"
             >
               −
             </button>
@@ -108,7 +108,7 @@ function OrderProductCard({
               inputMode="numeric"
               readOnly
               value={qty}
-              className="h-7 w-9 rounded border border-[#d4c4b0] bg-white text-center text-[0.7rem] font-semibold tabular-nums text-[var(--order-text)] sm:w-10 sm:text-xs"
+              className="h-7 w-9 rounded border border-[var(--shop-border)] bg-[var(--shop-surface)] text-center text-[0.7rem] font-semibold tabular-nums text-[var(--order-text)] sm:w-10 sm:text-xs"
               aria-label="Số lượng"
             />
             <button
@@ -116,7 +116,7 @@ function OrderProductCard({
               aria-label="Tăng"
               disabled={p.stock <= 0 || qty >= max}
               onClick={inc}
-              className="flex h-7 w-7 shrink-0 items-center justify-center rounded border border-[#d4c4b0] bg-white text-sm font-medium text-[var(--order-text)] transition enabled:hover:bg-stone-50 disabled:opacity-40"
+              className="flex h-7 w-7 shrink-0 items-center justify-center rounded border border-[var(--shop-border)] bg-[var(--shop-surface)] text-sm font-medium text-[var(--order-text)] transition enabled:hover:opacity-90 disabled:opacity-40"
             >
               +
             </button>

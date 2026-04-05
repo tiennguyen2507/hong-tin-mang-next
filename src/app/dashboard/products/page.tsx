@@ -127,15 +127,15 @@ export default function DashboardProductsPage() {
     <Stack gap={4}>
       <div className="flex flex-wrap items-center justify-between gap-2">
         <div>
-          <h1 className="text-xl font-semibold text-slate-900">Sản phẩm</h1>
-          <p className="text-sm text-slate-600">Danh sách món và đồ uống.</p>
+          <h1 className="text-xl font-semibold text-[var(--shop-text)]">Sản phẩm</h1>
+          <p className="text-sm text-[var(--shop-muted)]">Danh sách món và đồ uống.</p>
         </div>
         <div className="flex gap-2">
           <Button variant="secondary" size="sm" type="button" onClick={() => void load()}>
             Làm mới
           </Button>
           <Button
-            className="bg-[#2563eb] hover:bg-[#1d4ed8]"
+            className="bg-[var(--shop-primary)] hover:bg-[var(--shop-primary-hover)]"
             size="sm"
             type="button"
             onClick={openAdd}
@@ -146,11 +146,11 @@ export default function DashboardProductsPage() {
       </div>
 
       {error ? <Alert variant="destructive">{error}</Alert> : null}
-      {loading ? <p className="text-sm text-slate-500">Đang tải...</p> : null}
+      {loading ? <p className="text-sm text-[var(--shop-muted)]">Đang tải...</p> : null}
 
-      <div className="overflow-x-auto rounded-2xl border border-slate-100 bg-white shadow-sm">
-        <table className="min-w-full text-left text-sm">
-          <thead className="border-b border-slate-100 bg-slate-50 text-xs uppercase text-slate-500">
+      <div className="overflow-x-auto rounded-2xl border border-[var(--shop-border)] bg-[var(--shop-surface)] shadow-sm">
+        <table className="min-w-full text-left text-sm text-[var(--shop-text)]">
+          <thead className="border-b border-[var(--shop-border)] bg-[var(--shop-border)]/20 text-xs uppercase text-[var(--shop-muted)]">
             <tr>
               <th className="px-3 py-2">Ảnh</th>
               <th className="px-3 py-2">Tên</th>
@@ -163,9 +163,9 @@ export default function DashboardProductsPage() {
           </thead>
           <tbody>
             {items.map((p) => (
-              <tr key={p._id} className="border-b border-slate-50">
+              <tr key={p._id} className="border-b border-[var(--shop-border)]/60">
                 <td className="px-3 py-2">
-                  <div className="relative h-11 w-11 overflow-hidden rounded-lg bg-slate-100">
+                  <div className="relative h-11 w-11 overflow-hidden rounded-lg bg-[var(--shop-border)]/30">
                     <ProductImageWithFallback
                       src={getProductImageUrl(p)}
                       alt={p.name}
@@ -205,7 +205,7 @@ export default function DashboardProductsPage() {
               Hủy
             </Button>
             <Button
-              className="bg-[#2563eb] hover:bg-[#1d4ed8]"
+              className="bg-[var(--shop-primary)] hover:bg-[var(--shop-primary-hover)]"
               type="submit"
               form="product-form"
             >
@@ -250,10 +250,10 @@ export default function DashboardProductsPage() {
                 onChange={(e) => setForm((s) => ({ ...s, price: Number(e.target.value) }))}
               />
             </Field>
-            <label className="grid gap-1 text-xs font-medium text-slate-500">
+            <label className="grid gap-1 text-xs font-medium text-[var(--shop-muted)]">
               Danh mục
               <select
-                className="h-10 rounded-xl border border-zinc-200 bg-white px-3 text-sm dark:border-zinc-800"
+                className="h-10 rounded-xl border border-[var(--shop-border)] bg-[var(--shop-surface)] px-3 text-sm text-[var(--shop-text)]"
                 value={form.category}
                 onChange={(e) =>
                   setForm((s) => ({ ...s, category: e.target.value as ProductCategory }))

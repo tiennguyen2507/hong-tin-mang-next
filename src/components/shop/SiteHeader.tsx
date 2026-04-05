@@ -3,6 +3,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useCart } from "@/contexts/CartContext";
+import { UserMenuDropdown } from "@/components/shop/UserMenuDropdown";
+import { ThemeToggle } from "@/components/theme/ThemeToggle";
 import { cn } from "@/lib/cn";
 
 const nav = [
@@ -15,7 +17,7 @@ const nav = [
 export function SiteHeader() {
   const { count } = useCart();
   return (
-    <header className="sticky top-0 z-30 border-b border-orange-100/80 bg-white/90 shadow-sm shadow-orange-100/30 backdrop-blur-md">
+    <header className="sticky top-0 z-30 border-b border-[var(--header-border)] bg-[var(--header-bg)] shadow-sm shadow-[rgba(252,185,170,0.12)] backdrop-blur-md transition-colors duration-300 dark:shadow-[rgba(85,203,205,0.08)]">
       <div className="mx-auto flex w-full max-w-7xl items-center justify-between gap-3 px-4 py-3 sm:px-6">
         <Link href="/" className="flex shrink-0 items-center gap-2 transition hover:opacity-90">
           <Image
@@ -32,7 +34,7 @@ export function SiteHeader() {
             <Link
               key={item.href}
               href={item.href}
-              className="rounded-full px-3 py-2 text-sm font-semibold text-stone-700 transition hover:bg-orange-50 hover:text-[var(--landing-orange)]"
+              className="rounded-full px-3 py-2 text-sm font-semibold text-[var(--shop-text)] transition hover:bg-[var(--landing-peach)]/60 hover:text-[var(--shop-primary)] dark:hover:bg-white/5"
             >
               {item.label}
             </Link>
@@ -41,18 +43,18 @@ export function SiteHeader() {
         <div className="flex items-center gap-2 sm:gap-3">
           <Link
             href="/order"
-            className="hidden rounded-full bg-[var(--landing-orange)] px-4 py-2 text-sm font-semibold text-white shadow-md transition hover:-translate-y-0.5 hover:bg-[#e07d28] sm:inline-flex"
+            className="hidden rounded-full bg-[var(--shop-primary)] px-4 py-2 text-sm font-semibold text-white shadow-md transition hover:-translate-y-0.5 hover:bg-[var(--shop-primary-hover)] sm:inline-flex"
           >
             Đặt món
           </Link>
           <Link
             href="/cart"
             className={cn(
-              "relative inline-flex items-center gap-1.5 rounded-full border border-orange-200 bg-white px-3 py-2 text-sm font-semibold text-stone-800 shadow-sm transition hover:border-orange-300 hover:bg-orange-50/80",
+              "relative inline-flex items-center gap-1.5 rounded-full border border-[var(--shop-border)] bg-[var(--shop-surface)] px-3 py-2 text-sm font-semibold text-[var(--shop-text)] shadow-sm transition hover:border-[var(--shop-primary)]/40 hover:bg-[var(--landing-peach)]/40 dark:hover:bg-white/5",
             )}
           >
             <svg
-              className="h-4 w-4 text-[var(--landing-orange)]"
+              className="h-4 w-4 text-[var(--shop-primary)]"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -67,11 +69,13 @@ export function SiteHeader() {
             </svg>
             <span className="hidden sm:inline">Giỏ</span>
             {count > 0 ? (
-              <span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-[var(--landing-orange)] px-1 text-[11px] font-bold text-white shadow-sm">
+              <span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-[var(--shop-primary)] px-1 text-[11px] font-bold text-white shadow-sm">
                 {count > 99 ? "99+" : count}
               </span>
             ) : null}
           </Link>
+          <ThemeToggle />
+          <UserMenuDropdown />
         </div>
       </div>
     </header>

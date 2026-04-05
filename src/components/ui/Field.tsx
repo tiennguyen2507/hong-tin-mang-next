@@ -13,7 +13,7 @@ export type FieldProps = {
 export function Field({ id, label, children, className }: FieldProps) {
   return (
     <div className={cn("grid gap-1", className)}>
-      <label htmlFor={id} className="text-xs font-medium text-slate-500">
+      <label htmlFor={id} className="text-xs font-medium text-[var(--shop-muted)]">
         {label}
       </label>
       {children}

@@ -18,17 +18,17 @@ export function StatCard({
 }: StatCardProps) {
   const hintClass =
     hintTone === "up"
-      ? "text-emerald-600"
+      ? "text-emerald-600 dark:text-emerald-400"
       : hintTone === "down"
-        ? "text-rose-600"
-        : "text-slate-500";
+        ? "text-rose-600 dark:text-rose-400"
+        : "text-[var(--shop-muted)]";
 
   return (
     <Card>
       <div className="flex items-start justify-between gap-2">
         <div>
-          <p className="text-xs font-medium text-slate-500">{label}</p>
-          <p className="mt-1 text-2xl font-semibold tracking-tight text-slate-900">
+          <p className="text-xs font-medium text-[var(--shop-muted)]">{label}</p>
+          <p className="mt-1 text-2xl font-semibold tracking-tight text-[var(--shop-text)]">
             {value}
           </p>
           {hint ? (
@@ -36,7 +36,7 @@ export function StatCard({
           ) : null}
         </div>
         {icon ? (
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-50 text-slate-600">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--shop-border)]/25 text-[var(--shop-muted)]">
             {icon}
           </div>
         ) : null}

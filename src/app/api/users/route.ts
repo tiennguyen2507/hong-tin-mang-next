@@ -1,10 +1,13 @@
 import { NextResponse } from "next/server";
+import { requireAdmin } from "@/lib/auth/guard";
 import { createUser, listUsers } from "@/lib/db/users";
 import type { UserRole } from "@/lib/models";
 
-const ROLES = new Set<UserRole>(["customer", "admin"]);
+const ROLES = new Set<UserRole>(["user", "admin"]);
 
 export async function GET() {
+  const denied = await requireAdmin();
+  if (denied) return denied;
   try {
     const data = await listUsers();
     return NextResponse.json({ data });
@@ -16,12 +19,15 @@ export async function GET() {
 }
 
 export async function POST(req: Request) {
+  const denied = await requireAdmin();
+  if (denied) return denied;
   try {
     const body = (await req.json()) as {
       email?: string;
       name?: string;
       phone?: string;
       role?: UserRole;
+      password?: string;
     };
     if (typeof body.email !== "string" || !body.email.trim()) {
       return NextResponse.json({ error: "email required" }, { status: 400 });
@@ -32,11 +38,14 @@ export async function POST(req: Request) {
     if (!body.role || !ROLES.has(body.role)) {
       return NextResponse.json({ error: "invalid role" }, { status: 400 });
     }
+    const password =
+      typeof body.password === "string" && body.password.length > 0 ? body.password : undefined;
     const created = await createUser({
       email: body.email,
       name: body.name,
       phone: body.phone,
       role: body.role,
+      password,
     });
     return NextResponse.json(created);
   } catch (e) {

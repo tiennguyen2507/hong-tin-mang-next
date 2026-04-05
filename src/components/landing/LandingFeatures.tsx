@@ -32,25 +32,28 @@ const items = [
 
 export function LandingFeatures() {
   return (
-    <section id="features" className="scroll-mt-24 bg-[var(--landing-section-cream)] py-16 md:py-24">
+    <section
+      id="features"
+      className="scroll-mt-24 border-t border-[var(--shop-border)] bg-[var(--shop-bg)] py-16 md:py-24"
+    >
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <p className="font-heading text-center text-sm font-bold uppercase tracking-[0.2em] text-[var(--landing-orange)]">
           Tính năng
         </p>
-        <h2 className="font-heading mt-2 text-center text-3xl font-bold text-stone-900 md:text-4xl">
+        <h2 className="font-heading mt-2 text-center text-3xl font-bold text-[var(--shop-text)] md:text-4xl">
           Vì sao chọn chúng tôi?
         </h2>
         <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {items.map((f) => (
             <article
               key={f.title}
-              className="rounded-3xl border border-orange-100/80 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-md md:p-8"
+              className="rounded-3xl border border-[var(--shop-border)] bg-[var(--shop-surface)] p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-md md:p-8"
             >
-              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-orange-50 text-[var(--landing-orange)]">
+              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-orange-50 text-[var(--landing-orange)] dark:bg-[color-mix(in_srgb,var(--shop-primary)_18%,transparent)]">
                 {f.icon}
               </div>
-              <h3 className="font-heading mt-5 text-lg font-bold text-stone-900">{f.title}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-stone-600">{f.desc}</p>
+              <h3 className="font-heading mt-5 text-lg font-bold text-[var(--shop-text)]">{f.title}</h3>
+              <p className="mt-2 text-sm leading-relaxed text-[var(--shop-muted)]">{f.desc}</p>
             </article>
           ))}
         </div>

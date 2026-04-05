@@ -12,16 +12,15 @@ export type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
 };
 
 const base =
-  "inline-flex items-center justify-center rounded-full font-medium transition-colors disabled:opacity-50 disabled:pointer-events-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-400/60 dark:focus-visible:ring-zinc-600/60";
+  "inline-flex items-center justify-center rounded-full font-medium transition-colors disabled:opacity-50 disabled:pointer-events-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--shop-primary)]/50 focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--shop-bg)]";
 
 const variants: Record<Variant, string> = {
   primary:
-    "bg-zinc-900 text-white hover:bg-zinc-800 dark:bg-zinc-50 dark:text-zinc-950 dark:hover:bg-zinc-200",
+    "bg-[var(--shop-primary)] text-white hover:bg-[var(--shop-primary-hover)]",
   secondary:
-    "border border-zinc-200 bg-white hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-950 dark:hover:bg-zinc-900",
-  danger:
-    "bg-red-600 text-white hover:bg-red-500 dark:bg-red-600 dark:hover:bg-red-500",
-  ghost: "hover:bg-zinc-200/60 dark:hover:bg-zinc-800/60",
+    "border border-[var(--shop-border)] bg-[var(--shop-surface)] text-[var(--shop-text)] hover:bg-[var(--shop-border)]/35",
+  danger: "bg-red-600 text-white hover:bg-red-500 dark:bg-red-600 dark:hover:bg-red-500",
+  ghost: "text-[var(--shop-text)] hover:bg-[var(--shop-border)]/35",
 };
 
 const sizes: Record<Size, string> = {
@@ -44,4 +43,3 @@ export function Button({
     />
   );
 }
-

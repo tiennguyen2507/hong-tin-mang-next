@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { requireAdmin } from "@/lib/auth/guard";
 import {
   createProduct,
   listProducts,
@@ -10,6 +11,10 @@ export async function GET(req: Request) {
   try {
     const { searchParams } = new URL(req.url);
     const activeOnly = searchParams.get("all") !== "1";
+    if (!activeOnly) {
+      const denied = await requireAdmin();
+      if (denied) return denied;
+    }
     const data = await listProducts({ activeOnly });
     return NextResponse.json({ data });
   } catch (e) {
@@ -22,6 +27,8 @@ export async function GET(req: Request) {
 const CATS = new Set<ProductCategory>(["breakfast", "cafe", "drink"]);
 
 export async function POST(req: Request) {
+  const denied = await requireAdmin();
+  if (denied) return denied;
   try {
     const body = (await req.json()) as Partial<ProductInput>;
     if (typeof body.name !== "string" || !body.name.trim()) {

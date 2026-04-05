@@ -1,8 +1,11 @@
 import { NextResponse } from "next/server";
+import { requireAdmin } from "@/lib/auth/guard";
 import { createOrder, listOrders } from "@/lib/db/orders";
 import type { OrderItemLine } from "@/lib/models";
 
 export async function GET() {
+  const denied = await requireAdmin();
+  if (denied) return denied;
   try {
     const data = await listOrders();
     return NextResponse.json({ data });

@@ -15,7 +15,8 @@ const emptyForm = {
   email: "",
   name: "",
   phone: "",
-  role: "customer" as "customer" | "admin",
+  password: "",
+  role: "user" as "user" | "admin",
 };
 
 export default function DashboardUsersPage() {
@@ -53,6 +54,7 @@ export default function DashboardUsersPage() {
       email: u.email,
       name: u.name,
       phone: u.phone ?? "",
+      password: "",
       role: u.role,
     });
     setModalOpen(true);
@@ -67,12 +69,13 @@ export default function DashboardUsersPage() {
     e.preventDefault();
     setError(null);
     try {
-      const body = {
+      const body: Record<string, unknown> = {
         email: form.email,
         name: form.name,
         phone: form.phone || undefined,
         role: form.role,
       };
+      if (form.password.trim()) body.password = form.password;
       if (form.id) {
         await apiJson(`/api/users/${form.id}`, {
           method: "PATCH",
@@ -108,15 +111,15 @@ export default function DashboardUsersPage() {
     <Stack gap={4}>
       <div className="flex flex-wrap items-center justify-between gap-2">
         <div>
-          <h1 className="text-xl font-semibold text-slate-900">Người dùng</h1>
-          <p className="text-sm text-slate-600">Khách và tài khoản quản trị.</p>
+          <h1 className="text-xl font-semibold text-[var(--shop-text)]">Người dùng</h1>
+          <p className="text-sm text-[var(--shop-muted)]">Khách và tài khoản quản trị.</p>
         </div>
         <div className="flex gap-2">
           <Button variant="secondary" size="sm" type="button" onClick={() => void load()}>
             Làm mới
           </Button>
           <Button
-            className="bg-[#2563eb] hover:bg-[#1d4ed8]"
+            className="bg-[var(--shop-primary)] hover:bg-[var(--shop-primary-hover)]"
             size="sm"
             type="button"
             onClick={openAdd}
@@ -127,11 +130,11 @@ export default function DashboardUsersPage() {
       </div>
 
       {error ? <Alert variant="destructive">{error}</Alert> : null}
-      {loading ? <p className="text-sm text-slate-500">Đang tải...</p> : null}
+      {loading ? <p className="text-sm text-[var(--shop-muted)]">Đang tải...</p> : null}
 
-      <div className="overflow-x-auto rounded-2xl border border-slate-100 bg-white shadow-sm">
-        <table className="min-w-full text-left text-sm">
-          <thead className="border-b border-slate-100 bg-slate-50 text-xs uppercase text-slate-500">
+      <div className="overflow-x-auto rounded-2xl border border-[var(--shop-border)] bg-[var(--shop-surface)] shadow-sm">
+        <table className="min-w-full text-left text-sm text-[var(--shop-text)]">
+          <thead className="border-b border-[var(--shop-border)] bg-[var(--shop-border)]/20 text-xs uppercase text-[var(--shop-muted)]">
             <tr>
               <th className="px-3 py-2">Email</th>
               <th className="px-3 py-2">Tên</th>
@@ -142,11 +145,11 @@ export default function DashboardUsersPage() {
           </thead>
           <tbody>
             {items.map((u) => (
-              <tr key={u._id} className="border-b border-slate-50">
+              <tr key={u._id} className="border-b border-[var(--shop-border)]/60">
                 <td className="px-3 py-2">{u.email}</td>
                 <td className="px-3 py-2 font-medium">{u.name}</td>
                 <td className="px-3 py-2">{u.phone ?? "—"}</td>
-                <td className="px-3 py-2">{u.role === "admin" ? "Quản trị" : "Khách"}</td>
+                <td className="px-3 py-2">{u.role === "admin" ? "Quản trị" : "Người dùng"}</td>
                 <td className="px-3 py-2 text-right">
                   <Button variant="ghost" size="sm" type="button" onClick={() => openEdit(u)}>
                     Sửa
@@ -171,7 +174,7 @@ export default function DashboardUsersPage() {
               Hủy
             </Button>
             <Button
-              className="bg-[#2563eb] hover:bg-[#1d4ed8]"
+              className="bg-[var(--shop-primary)] hover:bg-[var(--shop-primary-hover)]"
               type="submit"
               form="user-form"
             >
@@ -207,16 +210,26 @@ export default function DashboardUsersPage() {
               onChange={(e) => setForm((s) => ({ ...s, phone: e.target.value }))}
             />
           </Field>
-          <label className="grid gap-1 text-xs font-medium text-slate-500">
+          <Field
+            id="u-password"
+            label={form.id ? "Mật khẩu mới (để trống nếu giữ nguyên)" : "Mật khẩu (tùy chọn — để trống thì chưa đăng nhập được)"}
+          >
+            <Input
+              id="u-password"
+              type="password"
+              autoComplete="new-password"
+              value={form.password}
+              onChange={(e) => setForm((s) => ({ ...s, password: e.target.value }))}
+            />
+          </Field>
+          <label className="grid gap-1 text-xs font-medium text-[var(--shop-muted)]">
             Vai trò
             <select
-              className="h-10 rounded-xl border border-zinc-200 bg-white px-3 text-sm"
+              className="h-10 rounded-xl border border-[var(--shop-border)] bg-[var(--shop-surface)] px-3 text-sm text-[var(--shop-text)]"
               value={form.role}
-              onChange={(e) =>
-                setForm((s) => ({ ...s, role: e.target.value as "customer" | "admin" }))
-              }
+              onChange={(e) => setForm((s) => ({ ...s, role: e.target.value as "user" | "admin" }))}
             >
-              <option value="customer">Khách</option>
+              <option value="user">Người dùng</option>
               <option value="admin">Quản trị</option>
             </select>
           </label>

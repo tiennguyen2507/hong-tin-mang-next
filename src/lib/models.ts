@@ -16,14 +16,18 @@ export type ProductDoc = {
   updatedAt: Date;
 };
 
-export type UserRole = "customer" | "admin";
+/** `customer` giữ trong DB cũ — chuẩn hoá khi đọc thành `user`. */
+export type UserRole = "user" | "admin";
 
 export type UserDoc = {
   _id?: ObjectId;
   email: string;
   name: string;
   phone?: string;
-  role: UserRole;
+  /** Lưu DB: `user` | `admin` hoặc legacy `customer`. */
+  role: UserRole | "customer";
+  /** Chỉ server; không trả về client. */
+  passwordHash?: string;
   createdAt: Date;
   updatedAt: Date;
 };
@@ -52,7 +56,8 @@ export type OrderDoc = {
 };
 
 export type Product = Omit<ProductDoc, "_id"> & { _id: string };
-export type User = Omit<UserDoc, "_id"> & { _id: string };
+/** Bản trả API: role đã chuẩn hoá, không có passwordHash. */
+export type User = Omit<UserDoc, "_id" | "role" | "passwordHash"> & { _id: string; role: UserRole };
 export type Order = Omit<OrderDoc, "_id" | "userId"> & {
   _id: string;
   userId?: string;

@@ -12,7 +12,7 @@ import { cn } from "@/lib/cn";
 
 /** Nền trắng + chữ tối cố định (mockup kem). Cần `border` (độ dày) kèm màu — chỉ `border-[color]` không đủ cho textarea. */
 const cartFieldClass =
-  "rounded-xl border border-[#d7cfc4] bg-white text-stone-900 placeholder:text-stone-500 shadow-none dark:border-[#d7cfc4] dark:bg-white dark:text-stone-900 dark:placeholder:text-stone-500";
+  "rounded-xl border border-[var(--cart-input-border)] bg-[var(--cart-surface)] text-[var(--cart-text)] placeholder:text-[var(--order-muted)] shadow-none";
 
 export default function CartPage() {
   const router = useRouter();
@@ -64,7 +64,7 @@ export default function CartPage() {
 
   if (!ready) {
     return (
-      <div className="min-h-[40vh] bg-[var(--cart-page-bg)] px-4 py-8">
+      <div className="flex flex-1 flex-col justify-center bg-[var(--cart-page-bg)] px-4 py-8">
         <p className="text-sm text-[var(--order-muted)]">Đang tải giỏ hàng...</p>
       </div>
     );
@@ -72,7 +72,7 @@ export default function CartPage() {
 
   return (
     <div
-      className="min-h-screen bg-[var(--cart-page-bg)] pb-12 pt-6 text-[var(--cart-text)] [color-scheme:light] sm:pb-16 sm:pt-8"
+      className="flex flex-1 flex-col bg-[var(--cart-page-bg)] pb-12 pt-6 text-[var(--cart-text)] transition-colors duration-300 sm:pb-16 sm:pt-8"
     >
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
@@ -84,17 +84,17 @@ export default function CartPage() {
           </div>
           <Link
             href="/order"
-            className="inline-flex w-fit items-center rounded-xl border border-[#d7cfc4] bg-white px-4 py-2.5 text-sm font-medium text-[var(--cart-text)] shadow-sm transition hover:bg-stone-50 dark:border-[#d7cfc4] dark:bg-white dark:text-[var(--cart-text)] dark:hover:bg-stone-50"
+            className="inline-flex w-fit items-center rounded-xl border border-[var(--cart-input-border)] bg-[var(--cart-surface)] px-4 py-2.5 text-sm font-medium text-[var(--cart-text)] shadow-sm transition hover:opacity-90"
           >
             ← Trở về đặt món
           </Link>
         </div>
 
-        <div className="mt-6 overflow-hidden rounded-xl border border-[#e8e0d8] bg-white shadow-sm">
+        <div className="mt-6 overflow-hidden rounded-xl border border-[var(--cart-outer-border)] bg-[var(--cart-surface)] shadow-sm">
           <div className="overflow-x-auto">
             <table className="w-full min-w-[640px] border-collapse text-left text-sm">
               <thead>
-                <tr className="border-b border-[#ebe3dc] bg-[var(--cart-table-head)]">
+                <tr className="border-b border-[var(--cart-muted-border)] bg-[var(--cart-table-head)]">
                   <th className="px-4 py-3 font-semibold text-[var(--cart-text)]">Sản phẩm</th>
                   <th className="px-4 py-3 font-semibold text-[var(--cart-text)]">Giá</th>
                   <th className="px-4 py-3 font-semibold text-[var(--cart-text)]">Số lượng</th>
@@ -117,10 +117,10 @@ export default function CartPage() {
                   });
                   const lineTotal = l.price * l.quantity;
                   return (
-                    <tr key={l.productId} className="border-b border-[#f0ebe6] last:border-0">
+                    <tr key={l.productId} className="border-b border-[var(--cart-muted-border)] last:border-0">
                       <td className="px-4 py-3 align-middle">
                         <div className="flex gap-3">
-                          <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-lg bg-stone-100">
+                          <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-lg bg-[var(--cart-table-head)]">
                             <ProductImageWithFallback
                               src={imgSrc}
                               alt={l.name}
@@ -134,7 +134,7 @@ export default function CartPage() {
                             <button
                               type="button"
                               onClick={() => remove(l.productId)}
-                              className="mt-1 text-xs font-medium text-red-700/90 underline-offset-2 hover:underline"
+                              className="mt-1 text-xs font-medium text-red-600 underline-offset-2 hover:underline dark:text-red-300"
                             >
                               Xóa
                             </button>
@@ -151,21 +151,21 @@ export default function CartPage() {
                             aria-label="Giảm"
                             disabled={l.quantity <= 1}
                             onClick={() => setQty(l.productId, l.quantity - 1)}
-                            className="flex h-8 w-8 items-center justify-center rounded-md border border-[#d4c4b0] bg-white text-stone-600 transition hover:bg-stone-50 disabled:opacity-40"
+                            className="flex h-8 w-8 items-center justify-center rounded-md border border-[var(--cart-input-border)] bg-[var(--cart-surface)] text-[var(--order-muted)] transition hover:opacity-90 disabled:opacity-40"
                           >
                             −
                           </button>
                           <input
                             readOnly
                             value={l.quantity}
-                            className="h-8 w-10 rounded-md border border-[#d4c4b0] bg-white text-center text-sm font-semibold tabular-nums text-stone-900 dark:bg-white dark:text-stone-900"
+                            className="h-8 w-10 rounded-md border border-[var(--cart-input-border)] bg-[var(--cart-surface)] text-center text-sm font-semibold tabular-nums text-[var(--cart-text)]"
                             aria-label="Số lượng"
                           />
                           <button
                             type="button"
                             aria-label="Tăng"
                             onClick={() => setQty(l.productId, l.quantity + 1)}
-                            className="flex h-8 w-8 items-center justify-center rounded-md border border-[#d4c4b0] bg-white text-stone-600 transition hover:bg-stone-50"
+                            className="flex h-8 w-8 items-center justify-center rounded-md border border-[var(--cart-input-border)] bg-[var(--cart-surface)] text-[var(--order-muted)] transition hover:opacity-90"
                           >
                             +
                           </button>
@@ -184,7 +184,7 @@ export default function CartPage() {
 
         <form onSubmit={onSubmit} className="mt-8 grid gap-8 lg:grid-cols-3 lg:gap-10">
           <div className="space-y-4 lg:col-span-2">
-            <div className="rounded-xl border border-[#e8e0d8] bg-white p-5 shadow-sm sm:p-6 dark:bg-white">
+            <div className="rounded-xl border border-[var(--cart-outer-border)] bg-[var(--cart-surface)] p-5 shadow-sm sm:p-6">
               <h2 className="text-lg font-bold text-[var(--cart-text)]">Thông tin khách hàng</h2>
               <div className="mt-4 grid gap-4 sm:grid-cols-2">
               <label className="grid gap-1.5 text-sm">
@@ -196,7 +196,7 @@ export default function CartPage() {
                   placeholder="Nguyễn Văn A"
                   className={cn(
                     cartFieldClass,
-                    "focus:border-[var(--shop-primary)] focus:ring-2 focus:ring-orange-200/50",
+                    "focus:border-[var(--shop-primary)] focus:ring-2 focus:ring-[var(--shop-primary)]/35",
                   )}
                 />
               </label>
@@ -209,7 +209,7 @@ export default function CartPage() {
                   placeholder="09xx xxx xxx"
                   className={cn(
                     cartFieldClass,
-                    "focus:border-[var(--shop-primary)] focus:ring-2 focus:ring-orange-200/50",
+                    "focus:border-[var(--shop-primary)] focus:ring-2 focus:ring-[var(--shop-primary)]/35",
                   )}
                 />
               </label>
@@ -223,7 +223,7 @@ export default function CartPage() {
                 placeholder="Số nhà, đường, phường, quận..."
                 className={cn(
                   cartFieldClass,
-                  "min-h-[5.5rem] w-full px-3 py-2.5 text-sm outline-none transition focus:border-[var(--shop-primary)] focus:ring-2 focus:ring-orange-200/50",
+                  "min-h-[5.5rem] w-full px-3 py-2.5 text-sm outline-none transition focus:border-[var(--shop-primary)] focus:ring-2 focus:ring-[var(--shop-primary)]/35",
                 )}
               />
             </label>
@@ -235,12 +235,12 @@ export default function CartPage() {
                 placeholder="Ít đường, giao trước 8h..."
                 className={cn(
                   cartFieldClass,
-                  "min-h-[4.5rem] w-full px-3 py-2.5 text-sm outline-none transition focus:border-[var(--shop-primary)] focus:ring-2 focus:ring-orange-200/50",
+                  "min-h-[4.5rem] w-full px-3 py-2.5 text-sm outline-none transition focus:border-[var(--shop-primary)] focus:ring-2 focus:ring-[var(--shop-primary)]/35",
                 )}
               />
             </label>
 
-            <p className="mt-4 text-xs leading-relaxed text-red-700 dark:text-red-600">
+            <p className="mt-4 text-xs leading-relaxed text-red-700 dark:text-red-300">
               * Giao hàng trong bán kính 12km tính từ khu FPT Complex, Nam Kỳ Khởi Nghĩa, Đà Nẵng. Vui lòng kiểm
               tra khoảng cách trước khi đặt.
             </p>
@@ -250,13 +250,15 @@ export default function CartPage() {
                 type="checkbox"
                 checked={distanceOk}
                 onChange={(e) => setDistanceOk(e.target.checked)}
-                className="mt-1 h-4 w-4 shrink-0 rounded border-[#d7cfc4] text-[var(--shop-primary)] focus:ring-orange-200"
+                className="mt-1 h-4 w-4 shrink-0 rounded border-[var(--cart-input-border)] text-[var(--shop-primary)] focus:ring-[var(--shop-primary)]/30"
               />
               <span>Bạn đã kiểm tra khoảng cách từ bạn đến chúng tôi dưới 12km phải không?</span>
             </label>
 
             {err ? (
-              <p className="mt-4 rounded-xl border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-800">{err}</p>
+              <p className="mt-4 rounded-xl border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-800 dark:border-red-800/55 dark:bg-red-950/45 dark:text-red-200">
+                {err}
+              </p>
             ) : null}
 
             <button
@@ -273,14 +275,14 @@ export default function CartPage() {
           </div>
 
           <aside className="lg:col-span-1">
-            <div className="sticky top-24 rounded-xl border border-[#e8e0d8] bg-white p-5 shadow-sm dark:bg-white">
+            <div className="sticky top-24 rounded-xl border border-[var(--cart-outer-border)] bg-[var(--cart-surface)] p-5 shadow-sm">
               <h3 className="text-lg font-bold text-[var(--cart-text)]">Tổng kết</h3>
               <dl className="mt-4 space-y-3 text-sm">
                 <div className="flex justify-between gap-4 text-[var(--order-muted)]">
                   <dt>Tổng sản phẩm</dt>
                   <dd className="font-semibold tabular-nums text-[var(--cart-text)]">{count}</dd>
                 </div>
-                <div className="flex justify-between gap-4 border-t border-[#f0ebe6] pt-3">
+                <div className="flex justify-between gap-4 border-t border-[var(--cart-muted-border)] pt-3">
                   <dt className="font-semibold text-[var(--cart-text)]">Tổng cộng</dt>
                   <dd className="text-lg font-bold tabular-nums text-[var(--cart-text)]">
                     {total.toLocaleString("vi-VN")} đ

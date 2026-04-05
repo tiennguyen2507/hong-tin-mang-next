@@ -61,7 +61,7 @@ export function ProductImageWithFallback({
     return (
       <div
         className={cn(
-          "absolute inset-0 flex items-center justify-center bg-gradient-to-br text-stone-400",
+          "absolute inset-0 flex items-center justify-center bg-linear-to-br text-[var(--shop-muted)]",
           catAccent[category],
         )}
         role="img"

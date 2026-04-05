@@ -12,7 +12,7 @@ export function Card({ className, padded = true, ...props }: CardProps) {
   return (
     <div
       className={cn(
-        "rounded-2xl border border-slate-100 bg-white shadow-[0_1px_3px_rgba(15,23,42,0.06)]",
+        "rounded-2xl border border-[var(--shop-border)] bg-[var(--shop-surface)] shadow-[0_1px_3px_rgba(15,23,42,0.06)] transition-colors dark:shadow-[0_1px_3px_rgba(0,0,0,0.25)]",
         padded && "p-4",
         className,
       )}
@@ -28,7 +28,7 @@ export function CardHeader({ className, ...props }: React.HTMLAttributes<HTMLDiv
 }
 
 export function CardTitle({ className, ...props }: React.HTMLAttributes<HTMLParagraphElement>) {
-  return <p className={cn("text-sm font-semibold text-slate-900", className)} {...props} />;
+  return <p className={cn("text-sm font-semibold text-[var(--shop-text)]", className)} {...props} />;
 }
 
 export function CardContent({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {

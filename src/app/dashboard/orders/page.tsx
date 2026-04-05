@@ -142,15 +142,15 @@ export default function DashboardOrdersPage() {
     <Stack gap={4}>
       <div className="flex flex-wrap items-center justify-between gap-2">
         <div>
-          <h1 className="text-xl font-semibold text-slate-900">Đơn hàng</h1>
-          <p className="text-sm text-slate-600">Theo dõi và cập nhật trạng thái đơn.</p>
+          <h1 className="text-xl font-semibold text-[var(--shop-text)]">Đơn hàng</h1>
+          <p className="text-sm text-[var(--shop-muted)]">Theo dõi và cập nhật trạng thái đơn.</p>
         </div>
         <div className="flex gap-2">
           <Button variant="secondary" size="sm" type="button" onClick={() => void load()}>
             Làm mới
           </Button>
           <Button
-            className="bg-[#2563eb] hover:bg-[#1d4ed8]"
+            className="bg-[var(--shop-primary)] hover:bg-[var(--shop-primary-hover)]"
             size="sm"
             type="button"
             onClick={openAdd}
@@ -161,11 +161,11 @@ export default function DashboardOrdersPage() {
       </div>
 
       {error ? <Alert variant="destructive">{error}</Alert> : null}
-      {loading ? <p className="text-sm text-slate-500">Đang tải...</p> : null}
+      {loading ? <p className="text-sm text-[var(--shop-muted)]">Đang tải...</p> : null}
 
-      <div className="overflow-x-auto rounded-2xl border border-slate-100 bg-white shadow-sm">
-        <table className="min-w-full text-left text-sm">
-          <thead className="border-b border-slate-100 bg-slate-50 text-xs uppercase text-slate-500">
+      <div className="overflow-x-auto rounded-2xl border border-[var(--shop-border)] bg-[var(--shop-surface)] shadow-sm">
+        <table className="min-w-full text-left text-sm text-[var(--shop-text)]">
+          <thead className="border-b border-[var(--shop-border)] bg-[var(--shop-border)]/20 text-xs uppercase text-[var(--shop-muted)]">
             <tr>
               <th className="px-3 py-2">Mã</th>
               <th className="px-3 py-2">Khách</th>
@@ -177,7 +177,7 @@ export default function DashboardOrdersPage() {
           </thead>
           <tbody>
             {orders.map((o) => (
-              <tr key={o._id} className="border-b border-slate-50">
+              <tr key={o._id} className="border-b border-[var(--shop-border)]/60">
                 <td className="px-3 py-2 font-mono text-xs">…{o._id.slice(-6)}</td>
                 <td className="px-3 py-2 font-medium">{o.customerName}</td>
                 <td className="px-3 py-2">{o.customerPhone}</td>
@@ -217,7 +217,7 @@ export default function DashboardOrdersPage() {
             >
               Đóng
             </Button>
-            <Button className="bg-[#2563eb] hover:bg-[#1d4ed8]" type="submit" form="order-edit-form">
+            <Button className="bg-[var(--shop-primary)] hover:bg-[var(--shop-primary-hover)]" type="submit" form="order-edit-form">
               Lưu trạng thái
             </Button>
           </>
@@ -225,24 +225,24 @@ export default function DashboardOrdersPage() {
       >
         {editOrder ? (
           <form id="order-edit-form" className="grid gap-3" onSubmit={saveEdit}>
-            <p className="text-sm text-slate-600">
+            <p className="text-sm text-[var(--shop-muted)]">
               {editOrder.customerName} · {editOrder.customerPhone}
             </p>
-            <p className="text-xs text-slate-500">{editOrder.deliveryAddress}</p>
+            <p className="text-xs text-[var(--shop-muted)]">{editOrder.deliveryAddress}</p>
             <p className="text-sm font-semibold text-[#1a56db]">
               {editOrder.total.toLocaleString("vi-VN")} đ
             </p>
-            <ul className="list-inside list-disc text-xs text-slate-600">
+            <ul className="list-inside list-disc text-xs text-[var(--shop-muted)]">
               {editOrder.items.map((it, i) => (
                 <li key={i}>
                   {it.name} × {it.quantity} — {it.price.toLocaleString("vi-VN")} đ
                 </li>
               ))}
             </ul>
-            <label className="grid gap-1 text-xs font-medium text-slate-500">
+            <label className="grid gap-1 text-xs font-medium text-[var(--shop-muted)]">
               Trạng thái
               <select
-                className="h-10 rounded-xl border border-zinc-200 bg-white px-3 text-sm"
+                className="h-10 rounded-xl border border-[var(--shop-border)] bg-[var(--shop-surface)] px-3 text-sm text-[var(--shop-text)]"
                 value={editStatus}
                 onChange={(e) => setEditStatus(e.target.value as OrderStatus)}
               >
@@ -267,7 +267,7 @@ export default function DashboardOrdersPage() {
             <Button variant="secondary" type="button" onClick={() => setAddOpen(false)}>
               Hủy
             </Button>
-            <Button className="bg-[#2563eb] hover:bg-[#1d4ed8]" type="submit" form="order-add-form">
+            <Button className="bg-[var(--shop-primary)] hover:bg-[var(--shop-primary-hover)]" type="submit" form="order-add-form">
               Tạo đơn
             </Button>
           </>
@@ -308,11 +308,11 @@ export default function DashboardOrdersPage() {
             />
           </Field>
           <div className="grid gap-2">
-            <span className="text-xs font-medium text-slate-500">Món trong đơn</span>
+            <span className="text-xs font-medium text-[var(--shop-muted)]">Món trong đơn</span>
             {lines.map((line, idx) => (
               <div key={idx} className="flex flex-wrap gap-2">
                 <select
-                  className="min-w-[200px] flex-1 rounded-xl border border-zinc-200 bg-white px-3 py-2 text-sm"
+                  className="min-w-[200px] flex-1 rounded-xl border border-[var(--shop-border)] bg-[var(--shop-surface)] px-3 py-2 text-sm text-[var(--shop-text)]"
                   value={line.productId}
                   onChange={(e) => {
                     const v = e.target.value;

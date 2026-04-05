@@ -18,9 +18,9 @@ export function Alert({
       className={cn(
         "rounded-2xl border p-3 text-sm",
         variant === "destructive" &&
-          "border-red-200 bg-red-50 text-red-800",
+          "border-red-200 bg-red-50 text-red-800 dark:border-red-800/60 dark:bg-red-950/40 dark:text-red-200",
         variant === "muted" &&
-          "border-slate-200 bg-slate-50 text-slate-800",
+          "border-[var(--shop-border)] bg-[var(--shop-border)]/20 text-[var(--shop-text)]",
         className,
       )}
       {...props}

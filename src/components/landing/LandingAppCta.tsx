@@ -2,20 +2,20 @@ import Link from "next/link";
 
 export function LandingAppCta() {
   return (
-    <section className="bg-white py-12 md:py-16">
+    <section className="border-t border-[var(--shop-border)] bg-white py-12 md:py-16 dark:bg-[var(--shop-surface)]">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
-        <div className="overflow-hidden rounded-[2rem] bg-gradient-to-br from-[#FFE8D6] via-[#FFF0E6] to-[var(--landing-orange)] p-8 shadow-lg md:p-12 md:pr-8">
+        <div className="overflow-hidden rounded-[2rem] bg-gradient-to-br from-[#FFE8D6] via-[#FFF0E6] to-[var(--landing-orange)] p-8 shadow-lg md:p-12 md:pr-8 dark:from-[#2a343f] dark:via-[#252e38] dark:to-[#1a2228] dark:shadow-black/25 dark:ring-1 dark:ring-[var(--shop-border)]">
           <div className="grid items-center gap-8 lg:grid-cols-2 lg:gap-12">
             <div className="text-center lg:text-left">
-              <h2 className="font-heading text-2xl font-bold text-stone-900 md:text-3xl lg:max-w-md">
+              <h2 className="font-heading text-2xl font-bold text-[var(--shop-text)] md:text-3xl lg:max-w-md">
                 Khám phá thực đơn gần bạn!
               </h2>
-              <p className="mt-3 text-stone-700/90">
+              <p className="mt-3 text-[var(--shop-muted)]">
                 Hàng trăm món được cập nhật — đặt trên điện thoại hay máy tính đều mượt.
               </p>
               <Link
                 href="/order"
-                className="mt-6 inline-flex rounded-full bg-white px-7 py-3 text-base font-bold text-[var(--landing-orange)] shadow-md transition hover:-translate-y-1 hover:shadow-lg"
+                className="mt-6 inline-flex rounded-full bg-[var(--shop-surface)] px-7 py-3 text-base font-bold text-[var(--shop-primary)] shadow-md transition hover:-translate-y-1 hover:shadow-lg"
               >
                 Đặt hàng ngay
               </Link>

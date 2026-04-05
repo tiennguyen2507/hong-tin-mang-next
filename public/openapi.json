@@ -424,7 +424,7 @@
           "email": { "type": "string", "format": "email" },
           "name": { "type": "string" },
           "phone": { "type": "string" },
-          "role": { "type": "string", "enum": ["customer", "admin"] },
+          "role": { "type": "string", "enum": ["user", "admin"] },
           "createdAt": { "type": "string", "format": "date-time" },
           "updatedAt": { "type": "string", "format": "date-time" }
         },
@@ -436,7 +436,7 @@
           "email": { "type": "string" },
           "name": { "type": "string" },
           "phone": { "type": "string" },
-          "role": { "type": "string", "enum": ["customer", "admin"] }
+          "role": { "type": "string", "enum": ["user", "admin"] }
         },
         "required": ["email", "name", "role"]
       },
@@ -446,7 +446,7 @@
           "email": { "type": "string" },
           "name": { "type": "string" },
           "phone": { "type": "string" },
-          "role": { "type": "string", "enum": ["customer", "admin"] }
+          "role": { "type": "string", "enum": ["user", "admin"] }
         }
       },
       "OrderItemLine": {

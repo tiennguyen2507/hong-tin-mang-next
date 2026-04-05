@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { requireAdmin } from "@/lib/auth/guard";
 import { deleteProduct, getProduct, updateProduct } from "@/lib/db/products";
 import type { ProductCategory } from "@/lib/models";
 
@@ -7,6 +8,8 @@ const CATS = new Set<ProductCategory>(["breakfast", "cafe", "drink"]);
 type Ctx = { params: Promise<{ id: string }> };
 
 export async function GET(_req: Request, ctx: Ctx) {
+  const denied = await requireAdmin();
+  if (denied) return denied;
   try {
     const { id } = await ctx.params;
     const doc = await getProduct(id);
@@ -20,6 +23,8 @@ export async function GET(_req: Request, ctx: Ctx) {
 }
 
 export async function PATCH(req: Request, ctx: Ctx) {
+  const denied = await requireAdmin();
+  if (denied) return denied;
   try {
     const { id } = await ctx.params;
     const body = (await req.json()) as Record<string, unknown>;
@@ -45,6 +50,8 @@ export async function PATCH(req: Request, ctx: Ctx) {
 }
 
 export async function DELETE(_req: Request, ctx: Ctx) {
+  const denied = await requireAdmin();
+  if (denied) return denied;
   try {
     const { id } = await ctx.params;
     const ok = await deleteProduct(id);

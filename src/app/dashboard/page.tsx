@@ -44,8 +44,8 @@ export default function DashboardOverviewPage() {
   return (
     <Stack gap={5}>
       <div>
-        <h1 className="text-xl font-semibold text-slate-900">Tổng quan</h1>
-        <p className="mt-1 text-sm text-slate-600">
+        <h1 className="text-xl font-semibold text-[var(--shop-text)]">Tổng quan</h1>
+        <p className="mt-1 text-sm text-[var(--shop-muted)]">
           Chọn mục trong sidebar để quản lý sản phẩm, người dùng và đơn hàng.
         </p>
       </div>
@@ -89,19 +89,19 @@ export default function DashboardOverviewPage() {
       <div className="grid gap-2 sm:grid-cols-3">
         <Link
           href="/dashboard/products"
-          className="rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-medium text-[#1a56db] shadow-sm transition hover:bg-slate-50"
+          className="rounded-2xl border border-[var(--shop-border)] bg-[var(--shop-surface)] px-4 py-3 text-sm font-medium text-[var(--shop-primary)] shadow-sm transition hover:bg-[var(--shop-border)]/25"
         >
           Quản lý sản phẩm →
         </Link>
         <Link
           href="/dashboard/users"
-          className="rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-medium text-[#1a56db] shadow-sm transition hover:bg-slate-50"
+          className="rounded-2xl border border-[var(--shop-border)] bg-[var(--shop-surface)] px-4 py-3 text-sm font-medium text-[var(--shop-primary)] shadow-sm transition hover:bg-[var(--shop-border)]/25"
         >
           Quản lý người dùng →
         </Link>
         <Link
           href="/dashboard/orders"
-          className="rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-medium text-[#1a56db] shadow-sm transition hover:bg-slate-50"
+          className="rounded-2xl border border-[var(--shop-border)] bg-[var(--shop-surface)] px-4 py-3 text-sm font-medium text-[var(--shop-primary)] shadow-sm transition hover:bg-[var(--shop-border)]/25"
         >
           Quản lý đơn hàng →
         </Link>

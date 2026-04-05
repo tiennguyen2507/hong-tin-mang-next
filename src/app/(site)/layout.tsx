@@ -9,9 +9,10 @@ export default function SiteLayout({
 }) {
   return (
     <CartProvider>
-      <div className="flex min-h-dvh flex-col bg-white text-[var(--shop-text)] antialiased">
+      {/* main min-h-dvh: màn đầu chỉ header + nội dung; footer nằm dưới fold, kéo xuống mới thấy */}
+      <div className="flex w-full flex-col bg-[var(--shop-bg)] text-[var(--shop-text)] antialiased transition-colors duration-300">
         <SiteHeader />
-        <main className="flex w-full flex-1 flex-col">{children}</main>
+        <main className="flex w-full min-h-dvh flex-col">{children}</main>
         <SiteFooter />
       </div>
     </CartProvider>

@@ -1,37 +1,99 @@
 @import "tailwindcss";
 
+/* Dark mode theo class `dark` trên <html> (next-themes) */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/*
+ * Pastel palettes (tham chiếu):
+ * P2: #ABDEE6 #CBAACB #FFFFB5 #FFCCB6 #F3B0C3
+ * P4: #C6DBDA #FEE1E8 #FED7C3 #F6EAC2 #ECD5E3
+ * P5: #FCB9AA #FFDBCC #ECEAE4 #A2E1DB #55CBCD
+ */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-  /* Tham chiếu phong cách TMĐT / đặt món VN: nền kem, cam CTA, giá đỏ */
-  --shop-bg: #faf6f1;
-  --shop-surface: #fffefb;
-  --shop-card: #ffffff;
-  --shop-border: rgba(120, 53, 15, 0.12);
-  --shop-text: #1c1917;
-  --shop-muted: #78716c;
-  --shop-primary: #f28c33;
-  --shop-primary-hover: #e07d28;
-  --shop-price: #dc2626;
-  /* Landing — cam kem, nền off-white (theo mood board) */
-  --landing-orange: #f28c33;
-  --landing-cream: #fff8f0;
-  --landing-peach: #ffe8d6;
-  /** Xen kẽ section trang chủ: trắng ↔ kem (Old Lace, gần #FDF5E6 / rgb(253,245,230)) */
-  --landing-section-cream: #fdf5e6;
-  /* Trang đặt hàng /order — kem & be như mockup */
-  --order-bg: #fdf8f1;
-  --order-card: #f5efe6;
-  --order-text: #3d2c1e;
-  --order-muted: #6b5344;
-  --order-btn: #a68b6a;
-  --order-btn-hover: #8f7356;
-  /* Trang giỏ — kem & nâu (mockup) */
-  --cart-page-bg: #faf5f0;
-  --cart-text: #3e2723;
-  --cart-table-head: #f0ebe6;
-  --cart-btn: #a6968a;
-  --cart-btn-hover: #8f7f72;
+  --background: #fffbf8;
+  --foreground: #3a353d;
+
+  --header-bg: rgba(255, 251, 248, 0.92);
+  --header-border: rgba(252, 185, 170, 0.5);
+  --header-toggle-bg: #ffffff;
+
+  --shop-bg: #fef6f0;
+  --shop-surface: #ffffff;
+  --shop-border: #eceae4;
+  --shop-text: #3a353d;
+  --shop-muted: #6d6570;
+  --shop-primary: #55cbcd;
+  --shop-primary-hover: #48b4b6;
+  --shop-price: #d4728a;
+
+  --landing-orange: #55cbcd;
+  --landing-cream: #fff5f0;
+  --landing-peach: #ffdbcc;
+  --landing-section-cream: #fef3e8;
+
+  --order-bg: #fff8f3;
+  --order-card: #feece4;
+  --order-text: #3d3438;
+  --order-muted: #6b5c62;
+  --order-btn: #55cbcd;
+  --order-btn-hover: #48b4b6;
+
+  --cart-page-bg: #fdf6f2;
+  --cart-text: #3d3438;
+  --cart-table-head: #ffeee8;
+  --cart-btn: #8fcaca;
+  --cart-btn-hover: #6fb8b8;
+  --cart-surface: #ffffff;
+  --cart-muted-border: #ebe3dc;
+  --cart-input-border: #d4c4c0;
+  --cart-outer-border: #e8e0d8;
+
+  --dashboard-bg: #f0f4f8;
+  --dashboard-shell-bg: #ffffff;
+}
+
+.dark {
+  --background: #141a1f;
+  --foreground: #ede8e4;
+
+  --header-bg: rgba(26, 32, 38, 0.92);
+  --header-border: rgba(85, 203, 205, 0.28);
+  --header-toggle-bg: #222b33;
+
+  --shop-bg: #141a1f;
+  --shop-surface: #1e262d;
+  --shop-border: rgba(162, 225, 219, 0.22);
+  --shop-text: #f0ebe6;
+  --shop-muted: #9aa5ad;
+  --shop-primary: #55cbcd;
+  --shop-primary-hover: #6fd4d6;
+  --shop-price: #f3b0c3;
+
+  --landing-orange: #6fd4d6;
+  --landing-cream: #1a2228;
+  --landing-peach: #222b34;
+  --landing-section-cream: #1e262d;
+
+  --order-bg: #161c22;
+  --order-card: #1e262d;
+  --order-text: #f0ebe6;
+  --order-muted: #9aacb5;
+  --order-btn: #55cbcd;
+  --order-btn-hover: #6fd4d6;
+
+  --cart-page-bg: #141a1f;
+  --cart-text: #f0ebe6;
+  /* Hơi sáng hơn --cart-surface để phân tách header bảng */
+  --cart-table-head: #252e38;
+  --cart-btn: #5cb0b2;
+  --cart-btn-hover: #6fd4d6;
+  --cart-surface: #1e262d;
+  --cart-muted-border: rgba(162, 225, 219, 0.22);
+  --cart-input-border: rgba(162, 225, 219, 0.42);
+  --cart-outer-border: rgba(162, 225, 219, 0.28);
+
+  --dashboard-bg: #141a1f;
+  --dashboard-shell-bg: #1e262d;
 }
 
 .font-heading {
@@ -47,13 +109,6 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-be-vietnam), var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
 }
 
 body {

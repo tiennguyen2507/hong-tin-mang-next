@@ -8,10 +8,10 @@ export type BadgeProps = React.HTMLAttributes<HTMLSpanElement> & {
 };
 
 const variants: Record<NonNullable<BadgeProps["variant"]>, string> = {
-  muted: "bg-slate-50 text-slate-500",
+  muted: "bg-[var(--shop-border)]/30 text-[var(--shop-muted)]",
   outline:
-    "border border-slate-200 bg-white font-medium text-slate-600 shadow-sm",
-  soft: "bg-[#eff6ff] text-[#1d4ed8] ring-1 ring-[#bfdbfe]/80",
+    "border border-[var(--shop-border)] bg-[var(--shop-surface)] font-medium text-[var(--shop-text)] shadow-sm",
+  soft: "bg-[var(--shop-primary)]/15 text-[var(--shop-primary)] ring-1 ring-[var(--shop-primary)]/25",
 };
 
 export function Badge({

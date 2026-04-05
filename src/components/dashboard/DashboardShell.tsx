@@ -92,8 +92,8 @@ function IconSettings() {
 const linkClass = (active: boolean) =>
   `flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition ${
     active
-      ? "bg-[#e8f0fe] text-[#1a56db]"
-      : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
+      ? "bg-[var(--shop-primary)]/15 text-[var(--shop-primary)]"
+      : "text-[var(--shop-muted)] hover:bg-[var(--shop-border)]/35 hover:text-[var(--shop-text)] dark:hover:bg-white/5"
   }`;
 
 export type DashboardShellProps = {
@@ -120,7 +120,7 @@ export function DashboardShell({ children, onLogout, toolbar }: DashboardShellPr
 
   return (
     <div className="flex h-full min-h-0 w-full flex-col overflow-hidden lg:flex-row">
-      <aside className="flex shrink-0 flex-col overflow-y-auto border-b border-slate-200/80 bg-white lg:h-full lg:w-[240px] lg:border-b-0 lg:border-r">
+      <aside className="flex shrink-0 flex-col overflow-y-auto border-b border-[var(--shop-border)] bg-[var(--dashboard-shell-bg)] transition-colors lg:h-full lg:w-[240px] lg:border-b-0 lg:border-r">
         <div className="flex flex-row items-center gap-2 p-3 lg:flex-col lg:items-stretch lg:p-4">
           <Link
             href="/order"
@@ -144,7 +144,7 @@ export function DashboardShell({ children, onLogout, toolbar }: DashboardShellPr
               <span className="hidden sm:inline">Cửa hàng</span>
             </Link>
 
-            <p className="hidden px-3 pt-3 text-[10px] font-semibold uppercase tracking-wider text-slate-400 lg:block">
+            <p className="hidden px-3 pt-3 text-[10px] font-semibold uppercase tracking-wider text-[var(--shop-muted)] lg:block">
               Quản trị
             </p>
             {adminLinks.map((item) => (
@@ -158,7 +158,7 @@ export function DashboardShell({ children, onLogout, toolbar }: DashboardShellPr
               </Link>
             ))}
 
-            <span className="hidden items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-slate-400 lg:flex">
+            <span className="hidden items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-[var(--shop-muted)] lg:flex">
               <IconSettings />
               Cài đặt
             </span>
@@ -166,28 +166,28 @@ export function DashboardShell({ children, onLogout, toolbar }: DashboardShellPr
         </div>
 
         {toolbar ? (
-          <div className="border-t border-slate-100 px-3 py-3 lg:px-4">{toolbar}</div>
+          <div className="border-t border-[var(--shop-border)] px-3 py-3 lg:px-4">{toolbar}</div>
         ) : null}
 
-        <div className="mt-auto hidden w-full flex-col gap-3 border-t border-slate-100 p-4 lg:flex">
-          <div className="rounded-2xl bg-linear-to-br from-[#dbeafe] to-[#e0e7ff] p-4">
-            <p className="text-sm font-semibold text-slate-800">Nâng cấp Pro</p>
-            <p className="mt-1 text-xs leading-relaxed text-slate-600">
+        <div className="mt-auto hidden w-full flex-col gap-3 border-t border-[var(--shop-border)] p-4 lg:flex">
+          <div className="rounded-2xl bg-linear-to-br from-[var(--shop-primary)]/15 to-[#cbaacb]/20 p-4 dark:from-[var(--shop-primary)]/10 dark:to-[#2a3038]">
+            <p className="text-sm font-semibold text-[var(--shop-text)]">Nâng cấp Pro</p>
+            <p className="mt-1 text-xs leading-relaxed text-[var(--shop-muted)]">
               Mở khóa thống kê nâng cao và xuất báo cáo.
             </p>
             <button
               type="button"
-              className="mt-3 w-full rounded-xl bg-[#2563eb] py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-[#1d4ed8]"
+              className="mt-3 w-full rounded-xl bg-[var(--shop-primary)] py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-[var(--shop-primary-hover)]"
             >
               Nâng cấp
             </button>
           </div>
-          <div className="flex flex-col gap-1 text-sm text-slate-500">
+          <div className="flex flex-col gap-1 text-sm text-[var(--shop-muted)]">
             <span>Trợ giúp</span>
             <button
               type="button"
               onClick={onLogout}
-              className="text-left text-slate-700 transition hover:text-[#1a56db]"
+              className="text-left text-[var(--shop-text)] transition hover:text-[var(--shop-primary)]"
             >
               Đăng xuất
             </button>
@@ -195,7 +195,7 @@ export function DashboardShell({ children, onLogout, toolbar }: DashboardShellPr
         </div>
       </aside>
 
-      <main className="min-h-0 min-w-0 flex-1 overflow-y-auto bg-[#f4f6f9] p-3 sm:p-4">
+      <main className="min-h-0 min-w-0 flex-1 overflow-y-auto bg-[var(--dashboard-bg)] p-3 transition-colors sm:p-4">
         {children}
       </main>
     </div>
